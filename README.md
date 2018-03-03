@@ -100,8 +100,8 @@ It will return:
 ```
 
 ## Useful Links
-https://spring.io/guides/gs/authenticating-ldap/
-http://www.opencodez.com/java/configure-ldap-authentication-using-spring-boot.htm
+- https://spring.io/guides/gs/authenticating-ldap/
+- http://www.opencodez.com/java/configure-ldap-authentication-using-spring-boot.htm
 
 ## How to make a LDAP dump using ldapsearch
 ```
