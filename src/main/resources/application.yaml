@@ -1,7 +1,0 @@
-ldap:
-  urls: ldap://localhost:389/
-  base.dn: dc=mycompany,dc=com
-  manager:
-    dn: cn=admin,dc=mycompany,dc=com
-    password: admin
-  user.dn.pattern: uid={0},ou=users
