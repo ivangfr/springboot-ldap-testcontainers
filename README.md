@@ -46,7 +46,7 @@ Mark Cuban > username: mcuban, password: 123
 
 In `springboot-ldap` root folder, run those 2 commands:
 ```
-mvn clean package -DskipTests
+mvn clean package
 java -jar target/springboot-ldap-0.0.1-SNAPSHOT.jar
 ```
 
