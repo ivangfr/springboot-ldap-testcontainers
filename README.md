@@ -50,7 +50,7 @@ mvn clean package
 java -jar target/springboot-ldap-0.0.1-SNAPSHOT.jar
 ```
 
-## Test
+## Testing using cUrl
 
 1. Open a new terminal
 
@@ -97,6 +97,35 @@ curl -u cslim:123 'http://localhost:8080/api/private'
 It will return:
 ```
 "status":401,"error":"Unauthorized","message":"Bad credentials"
+```
+
+## Testing using Swagger
+
+1. Access the link
+```
+http://localhost:8080/swagger-ui.html
+```
+
+2. Click on `application-controller` to open it.
+
+3. Click on `GET /api/public` to open it. Then, click on `Try it out` button and, finally, click on `Execute` button
+It will return:
+```
+Code: 200
+Response Body: It is public.
+```
+
+4. Now click on `GET /api/private`, it is a secured endpoint. Then, click on `Try it out` button and, finally, click on `Execute` button
+
+5. A window will appear to inform the username and password. Type
+```
+username: bgates
+password: 123
+```
+It will return:
+```
+Code: 200
+Response Body: bgates, it is private.
 ```
 
 ## Useful Links
