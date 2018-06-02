@@ -2,7 +2,7 @@
 
 ## Goal
 
-The goal of this project is to create a simple REST API and securing it with the Spring Security LDAP module.
+The goal of this project is to create a simple REST API and secure it with the Spring Security LDAP module.
 
 ## Start Environment
 
@@ -12,15 +12,16 @@ The goal of this project is to create a simple REST API and securing it with the
 
 2. Inside `/springboot-ldap/dev` folder run
 ```
-docker-compose up
+docker-compose up -d
 ```
+> To stop and remove containers, networks, images, and volumes type:
+> ```
+> docker-compose down
+> ```
 
 ### LDAP
 
-1. Access the link
-```
-https://localhost:6443
-```
+1. Access the link: https://localhost:6443
 
 2. Login with the credentials
 ```
@@ -31,7 +32,8 @@ Password: admin
 3. Import the file `ldap-mycompany-com.ldif`
 
 This file has already a pre-defined structure for mycompany.com.
-Basically, it has 2 groups (employees and clients) and 3 users (Bill Gates, Steve Jobs and Mark Cuban). Besides, it is defined that Bill Gates and Steve Jobs belong to employees group and Mark Cuban belongs to clients group.
+Basically, it has 2 groups (employees and clients) and 3 users (Bill Gates, Steve Jobs and Mark Cuban).
+Besides, it is defined that Bill Gates and Steve Jobs belong to employees group and Mark Cuban belongs to clients group.
 ```
 Bill Gates > username: bgates, password: 123
 Steve Jobs > username: sjobs, password: 123
@@ -46,8 +48,7 @@ Mark Cuban > username: mcuban, password: 123
 
 In `springboot-ldap` root folder, run those 2 commands:
 ```
-mvn clean package
-java -jar target/springboot-ldap-0.0.1-SNAPSHOT.jar
+mvn clean spring-boot:run
 ```
 
 ## Testing using cUrl
@@ -56,47 +57,73 @@ java -jar target/springboot-ldap-0.0.1-SNAPSHOT.jar
 
 2. Call the endpoint `/api/public` using the cURL command bellow.
 ```
-curl 'http://localhost:8080/api/public'
+curl -i http://localhost:8080/api/public
 ```
 It will return:
 ```
-It is public.
+Code: 200
+Response Body: It is public.
 ```
 
 3. Try to call the endpoint `/api/private` using the cURL command bellow.
 ``` 
-curl 'http://localhost:8080/api/private'
+curl -i http://localhost:8080/api/private
 ```
 It will return:
 ```
-"status":401,"error":"Unauthorized","message":"Full authentication is required to access this resource"
+Code: 401
+Reponse Body:
+{
+  "timestamp": "2018-06-02T22:39:18.534+0000",
+  "status": 401,
+  "error": "Unauthorized",
+  "message": "Unauthorized",
+  "path": "/api/private"
+}
 ```
 
-4. Call the endpoint `/api/private` using the cURL command bellow, but now informing username and password.
+4. Call the endpoint `/api/private` using the cURL command bellow. However, now informing `username` and `password`.
 ``` 
-curl -u bgates:123 'http://localhost:8080/api/private'
+curl -i -u bgates:123 http://localhost:8080/api/private
 ```
 It will return:
 ```
-bgates, it is private.
+Code: 200
+Response Body: bgates, it is private.
 ```
 
 5. Call the endpoint `/api/private` using the cURL command bellow, informing an invalid password.
 ``` 
-curl -u bgates:124 'http://localhost:8080/api/private'
+curl -i -u bgates:124 http://localhost:8080/api/private
 ```
 It will return:
 ```
-"status":401,"error":"Unauthorized","message":"Bad credentials"
+Code: 401
+Response Body: 
+{
+  "timestamp": "2018-06-02T22:42:29.221+0000",
+  "status": 401,
+  "error": "Unauthorized",
+  "message": "Unauthorized",
+  "path": "/api/private"
+}
 ```
 
-6. Call the endpoint `/api/private` using the cURL command bellow, informing a not existing user.
+6. Call the endpoint `/api/private` using the cURL command bellow, informing a non-existing user.
 ``` 
-curl -u cslim:123 'http://localhost:8080/api/private'
+curl -i -u cslim:123 http://localhost:8080/api/private
 ```
 It will return:
 ```
-"status":401,"error":"Unauthorized","message":"Bad credentials"
+Code: 401
+Response Body:
+{
+  "timestamp": "2018-06-02T22:44:13.617+0000",
+  "status": 401,
+  "error": "Unauthorized",
+  "message": "Unauthorized",
+  "path": "/api/private"
+}
 ```
 
 ## Testing using Swagger
@@ -108,14 +135,14 @@ http://localhost:8080/swagger-ui.html
 
 2. Click on `application-controller` to open it.
 
-3. Click on `GET /api/public` to open it. Then, click on `Try it out` button and, finally, click on `Execute` button
+3. Click on `GET /api/public`, click on `Try it out` button and, finally, click on `Execute` button
 It will return:
 ```
 Code: 200
 Response Body: It is public.
 ```
 
-4. Now click on `GET /api/private`, it is a secured endpoint. Then, click on `Try it out` button and, finally, click on `Execute` button
+4. Now, click on `GET /api/private`, it is a secured endpoint. Then, click on `Try it out` button and, finally, click on `Execute` button
 
 5. A window will appear to inform the username and password. Type
 ```
@@ -132,7 +159,7 @@ Response Body: bgates, it is private.
 - https://spring.io/guides/gs/authenticating-ldap/
 - http://www.opencodez.com/java/configure-ldap-authentication-using-spring-boot.htm
 
-## How to make a LDAP dump using ldapsearch
+## How to make a LDAP dump using `ldapsearch`
 ```
 ldapsearch -Wx -D "cn=admin,dc=mycompany,dc=com" -b "dc=mycompany,dc=com" -H ldap://localhost:389 -LLL > ldap_dump.ldif
 ```

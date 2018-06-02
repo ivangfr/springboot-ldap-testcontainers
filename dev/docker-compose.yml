@@ -1,8 +1,8 @@
-version: '3'
+version: '3.5'
 services:
 
   ldap-service:
-    image: osixia/openldap:1.1.11
+    image: osixia/openldap:1.2.1
     container_name: ldap-service
     hostname: ldap-service
     environment:
@@ -10,6 +10,9 @@ services:
       - LDAP_DOMAIN=mycompany.com
     ports:
       - 389:389
+#    healthcheck:
+#      test: ???
+#      start_period: 10s
 
   phpldapadmin-service:
     image: osixia/phpldapadmin:0.7.1
@@ -23,3 +26,6 @@ services:
       - ldap-service
     links:
       - ldap-service:ldap-host
+#    healthcheck:
+#      test: ???
+#      start_period: 10s
