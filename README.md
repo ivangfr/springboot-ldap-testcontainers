@@ -16,10 +16,10 @@ docker-compose up -d
 ```
 > To stop and remove containers, networks, images, and volumes type:
 > ```
-> docker-compose down
+> docker-compose down -v
 > ```
 
-### LDAP
+### [OpenLDAP](https://www.openldap.org/)
 
 1. Access the link: https://localhost:6443
 
@@ -156,10 +156,11 @@ Response Body: bgates, it is private.
 ```
 
 ## Useful Links
+
 - https://spring.io/guides/gs/authenticating-ldap/
 - http://www.opencodez.com/java/configure-ldap-authentication-using-spring-boot.htm
 
-## How to make a LDAP dump using `ldapsearch`
+## How to make a LDAP dump using ldapsearch
 ```
 ldapsearch -Wx -D "cn=admin,dc=mycompany,dc=com" -b "dc=mycompany,dc=com" -H ldap://localhost:389 -LLL > ldap_dump.ldif
 ```
