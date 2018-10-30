@@ -23,7 +23,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().authorizeRequests()
+        http.csrf()
+                .disable()
+                .authorizeRequests()
                 .antMatchers("/api/private**").authenticated()
                 .anyRequest().permitAll()
                 .and()
@@ -32,7 +34,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.ldapAuthentication().contextSource()
+        auth.ldapAuthentication()
+                .contextSource()
                 .url(ldapProperties.getUrls() + "/" + ldapProperties.getBase().getDn())
                 .managerDn(ldapProperties.getManager().getDn())
                 .managerPassword(ldapProperties.getManager().getPassword())

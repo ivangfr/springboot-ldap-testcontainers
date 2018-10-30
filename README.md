@@ -10,7 +10,7 @@ The goal of this project is to create a simple REST API and secure it with the S
 
 1. Open one terminal
 
-2. Inside `/springboot-ldap/dev` folder run
+2. Inside `/springboot-ldap` root folder run
 ```
 docker-compose up -d
 ```
@@ -29,7 +29,7 @@ Login DN: cn=admin,dc=mycompany,dc=com
 Password: admin
 ```
 
-3. Import the file `ldap-mycompany-com.ldif`
+3. Import the file `ldap-mycompany-com.ldif` that is in `src/main/java/resources`
 
 This file has already a pre-defined structure for mycompany.com.
 Basically, it has 2 groups (employees and clients) and 3 users (Bill Gates, Steve Jobs and Mark Cuban).
@@ -155,7 +155,7 @@ Code: 200
 Response Body: bgates, it is private.
 ```
 
-## Useful Links
+## References
 
 - https://spring.io/guides/gs/authenticating-ldap/
 - http://www.opencodez.com/java/configure-ldap-authentication-using-spring-boot.htm

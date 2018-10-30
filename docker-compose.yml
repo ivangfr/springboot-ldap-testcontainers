@@ -2,7 +2,7 @@ version: '3.5'
 services:
 
   ldap-service:
-    image: osixia/openldap:1.2.1
+    image: osixia/openldap:1.2.2
     container_name: ldap-service
     hostname: ldap-service
     environment:
@@ -15,7 +15,7 @@ services:
 #      start_period: 10s
 
   phpldapadmin-service:
-    image: osixia/phpldapadmin:0.7.1
+    image: osixia/phpldapadmin:0.7.2
     container_name: phpldapadmin-service
     hostname: phpldapadmin-service
     environment:
