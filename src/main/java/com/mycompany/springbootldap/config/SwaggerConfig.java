@@ -45,7 +45,7 @@ public class SwaggerConfig {
     }
 
     @Bean
-    public SecurityConfiguration security() {
+    SecurityConfiguration security() {
         return SecurityConfigurationBuilder.builder()
                 .useBasicAuthenticationWithAccessCodeGrant(false)
                 .build();

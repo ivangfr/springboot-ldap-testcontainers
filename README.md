@@ -19,7 +19,29 @@ docker-compose up -d
 > docker-compose down -v
 > ```
 
-### [OpenLDAP](https://www.openldap.org/)
+### Import OpenLDAP Users
+
+The LDIF file we will use, `/springboot-ldap/ldap/ldap-mycompany-com.ldif`, has already a pre-defined structure for
+mycompany.com. Basically, it has 2 groups (employees and clients) and 3 users (Bill Gates, Steve Jobs and Mark Cuban).
+Besides, it is defined that Bill Gates and Steve Jobs belong to employees group and Mark Cuban belongs to clients group.
+```
+Bill Gates > username: bgates, password: 123
+Steve Jobs > username: sjobs, password: 123
+Mark Cuban > username: mcuban, password: 123
+```
+
+There are two ways to import those users: just running a script or through `phpldapadmin`
+
+#### Import users with script
+
+In `/springboot-ldap` root folder run
+```
+./import-openldap-users.sh.sh
+```
+
+#### Import Users with phpldapadmin
+
+![openldap](images/openldap.png)
 
 1. Access the link: https://localhost:6443
 
@@ -29,50 +51,46 @@ Login DN: cn=admin,dc=mycompany,dc=com
 Password: admin
 ```
 
-3. Import the file `ldap-mycompany-com.ldif` that is in `src/main/java/resources`
+3. Import the file `/springboot-ldap/ldap/ldap-mycompany-com.ldif`
 
-This file has already a pre-defined structure for mycompany.com.
-Basically, it has 2 groups (employees and clients) and 3 users (Bill Gates, Steve Jobs and Mark Cuban).
-Besides, it is defined that Bill Gates and Steve Jobs belong to employees group and Mark Cuban belongs to clients group.
+#### Check Users Imported
+
+In a terminal, you can test ldap configuration using `ldapsearch`
 ```
-Bill Gates > username: bgates, password: 123
-Steve Jobs > username: sjobs, password: 123
-Mark Cuban > username: mcuban, password: 123
+ldapsearch -x -D "cn=admin,dc=mycompany,dc=com" \
+  -w admin -H ldap://localhost:389 \
+  -b "ou=users,dc=mycompany,dc=com" \
+  -s sub "(uid=*)"
 ```
 
-### Spring Boot Application
+### Start springboot-ldap application
 
-1. Open a new terminal
-
-2. Start `springboot-ldap` application
-
-In `springboot-ldap` root folder, run those 2 commands:
+In `/springboot-ldap` root folder, run
 ```
 mvn clean spring-boot:run
 ```
 
-## Testing using cUrl
+## Testing using curl
 
 1. Open a new terminal
 
-2. Call the endpoint `/api/public` using the cURL command bellow.
+2. Call the endpoint `/api/public` using the `curl` bellow.
 ```
 curl -i http://localhost:8080/api/public
 ```
 It will return:
 ```
-Code: 200
-Response Body: It is public.
+HTTP/1.1 200
+It is public.
 ```
 
-3. Try to call the endpoint `/api/private` using the cURL command bellow.
+3. Try to call the endpoint `/api/private` using the `curl` bellow (without credentials).
 ``` 
 curl -i http://localhost:8080/api/private
 ```
 It will return:
 ```
-Code: 401
-Reponse Body:
+HTTP/1.1 401
 {
   "timestamp": "2018-06-02T22:39:18.534+0000",
   "status": 401,
@@ -82,24 +100,23 @@ Reponse Body:
 }
 ```
 
-4. Call the endpoint `/api/private` using the cURL command bellow. However, now informing `username` and `password`.
+4. Call the endpoint `/api/private` again. This time informing `username` and `password`.
 ``` 
 curl -i -u bgates:123 http://localhost:8080/api/private
 ```
 It will return:
 ```
-Code: 200
-Response Body: bgates, it is private.
+HTTP/1.1 200
+bgates, it is private.
 ```
 
-5. Call the endpoint `/api/private` using the cURL command bellow, informing an invalid password.
+5. Call the endpoint `/api/private` informing an invalid password.
 ``` 
 curl -i -u bgates:124 http://localhost:8080/api/private
 ```
 It will return:
 ```
-Code: 401
-Response Body: 
+HTTP/1.1 401 
 {
   "timestamp": "2018-06-02T22:42:29.221+0000",
   "status": 401,
@@ -109,14 +126,13 @@ Response Body:
 }
 ```
 
-6. Call the endpoint `/api/private` using the cURL command bellow, informing a non-existing user.
+6. Call the endpoint `/api/private` informing a non-existing user.
 ``` 
 curl -i -u cslim:123 http://localhost:8080/api/private
 ```
 It will return:
 ```
-Code: 401
-Response Body:
+HTTP/1.1 401
 {
   "timestamp": "2018-06-02T22:44:13.617+0000",
   "status": 401,
@@ -128,12 +144,11 @@ Response Body:
 
 ## Testing using Swagger
 
-1. Access the link
-```
-http://localhost:8080/swagger-ui.html
-```
+![swagger](images/swagger.png)
 
-2. Click on `application-controller` to open it.
+1. Access the link http://localhost:8080/swagger-ui.html
+
+2. Click on `public-private-controller` to open it.
 
 3. Click on `GET /api/public`, click on `Try it out` button and, finally, click on `Execute` button
 It will return:
@@ -154,11 +169,6 @@ It will return:
 Code: 200
 Response Body: bgates, it is private.
 ```
-
-## References
-
-- https://spring.io/guides/gs/authenticating-ldap/
-- http://www.opencodez.com/java/configure-ldap-authentication-using-spring-boot.htm
 
 ## How to make a LDAP dump using ldapsearch
 ```

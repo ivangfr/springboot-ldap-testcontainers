@@ -1,9 +1,9 @@
 version: '3.5'
 services:
 
-  ldap-service:
+  ldap-host:
     image: osixia/openldap:1.2.2
-    container_name: ldap-service
+    container_name: ldap-host
     hostname: ldap-service
     environment:
       - LDAP_ORGANISATION="MyCompany Inc."
@@ -23,9 +23,7 @@ services:
     ports:
       - 6443:443
     depends_on:
-      - ldap-service
-    links:
-      - ldap-service:ldap-host
+      - ldap-host
 #    healthcheck:
 #      test: ???
 #      start_period: 10s

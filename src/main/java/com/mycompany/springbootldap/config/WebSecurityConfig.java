@@ -1,7 +1,8 @@
 package com.mycompany.springbootldap.config;
 
-import com.mycompany.springbootldap.property.LdapProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.ldap.LdapProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -15,6 +16,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private LdapProperties ldapProperties;
+
+    @Value("${ldap.userDnPattern}")
+    private String userDnPattern;
 
     @Autowired
     public void setLdapProperties(LdapProperties ldapProperties) {
@@ -34,13 +38,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
+        String url = String.format("%s/%s", ldapProperties.getUrls()[0], ldapProperties.getBase());
+
         auth.ldapAuthentication()
                 .contextSource()
-                .url(ldapProperties.getUrls() + "/" + ldapProperties.getBase().getDn())
-                .managerDn(ldapProperties.getManager().getDn())
-                .managerPassword(ldapProperties.getManager().getPassword())
+                .url(url)
+                .managerDn(ldapProperties.getUsername())
+                .managerPassword(ldapProperties.getPassword())
                 .and()
-                .userDnPatterns(ldapProperties.getUser().getDn().getPattern());
+                .userDnPatterns(userDnPattern);
     }
 
 }
