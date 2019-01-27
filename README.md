@@ -14,7 +14,7 @@ The goal of this project is to create a simple REST API and secure it with the S
 ```
 docker-compose up -d
 ```
-> To stop and remove containers, networks, images, and volumes type:
+> To stop and remove containers, networks and volumes type:
 > ```
 > docker-compose down -v
 > ```
@@ -36,7 +36,7 @@ There are two ways to import those users: just running a script or through `phpl
 
 In `/springboot-ldap` root folder run
 ```
-./import-openldap-users.sh.sh
+./import-openldap-users.sh
 ```
 
 #### Import Users with phpldapadmin
