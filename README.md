@@ -1,12 +1,10 @@
-# springboot-ldap
-
-## Goal
+# `springboot-ldap`
 
 The goal of this project is to create a simple REST API and secure it with the Spring Security LDAP module.
 
-## Start Environment
+# Start Environment
 
-### Docker Compose
+## Docker Compose
 
 1. Open one terminal
 
@@ -19,10 +17,10 @@ docker-compose up -d
 > docker-compose down -v
 > ```
 
-### Import OpenLDAP Users
+# Import OpenLDAP Users
 
-The LDIF file we will use, `/springboot-ldap/ldap/ldap-mycompany-com.ldif`, has already a pre-defined structure for
-mycompany.com. Basically, it has 2 groups (employees and clients) and 3 users (Bill Gates, Steve Jobs and Mark Cuban).
+The `LDIF` file we will use, `/springboot-ldap/ldap/ldap-mycompany-com.ldif`, has already a pre-defined structure for
+`mycompany.com`. Basically, it has 2 groups (employees and clients) and 3 users (Bill Gates, Steve Jobs and Mark Cuban).
 Besides, it is defined that Bill Gates and Steve Jobs belong to employees group and Mark Cuban belongs to clients group.
 ```
 Bill Gates > username: bgates, password: 123
@@ -32,14 +30,14 @@ Mark Cuban > username: mcuban, password: 123
 
 There are two ways to import those users: just running a script or through `phpldapadmin`
 
-#### Import users with script
+### Import users with script
 
 In `/springboot-ldap` root folder run
 ```
 ./import-openldap-users.sh
 ```
 
-#### Import Users with phpldapadmin
+### Import users with phpldapadmin
 
 ![openldap](images/openldap.png)
 
@@ -53,7 +51,7 @@ Password: admin
 
 3. Import the file `/springboot-ldap/ldap/ldap-mycompany-com.ldif`
 
-#### Check Users Imported
+### Check Users Imported
 
 In a terminal, you can test ldap configuration using `ldapsearch`
 ```
@@ -63,11 +61,11 @@ ldapsearch -x -D "cn=admin,dc=mycompany,dc=com" \
   -s sub "(uid=*)"
 ```
 
-### Start springboot-ldap application
+# Run application
 
 In `/springboot-ldap` root folder, run
 ```
-mvn clean spring-boot:run
+./mvnw clean spring-boot:run
 ```
 
 ## Testing using curl
@@ -170,7 +168,7 @@ Code: 200
 Response Body: bgates, it is private.
 ```
 
-## How to make a LDAP dump using ldapsearch
+## LDAP dump using ldapsearch
 ```
 ldapsearch -Wx -D "cn=admin,dc=mycompany,dc=com" -b "dc=mycompany,dc=com" -H ldap://localhost:389 -LLL > ldap_dump.ldif
 ```
