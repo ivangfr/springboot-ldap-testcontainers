@@ -1,4 +1,4 @@
-package com.mycompany.springbootldap.config;
+package com.mycompany.simpleservice.config;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;

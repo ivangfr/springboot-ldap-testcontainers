@@ -1,6 +1,6 @@
 spring:
   application:
-    name: springboot-ldap
+    name: simple-service
   ldap:
     urls: ldap://localhost:389
     base: ou=users,dc=mycompany,dc=com
