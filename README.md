@@ -1,7 +1,7 @@
 # `springboot-ldap`
 
-The goal of this project is to create a simple Spring-Boot REST API, called `simple-service`, and secure it with Spring
-Security LDAP module.
+The goal of this project is to create a simple `Spring-Boot` REST API, called `simple-service`, and secure it with
+`Spring Security LDAP` module.
 
 ## Microservice
 
@@ -43,13 +43,15 @@ In `springboot-ldap` root folder run
 
 ![openldap](images/openldap.png)
 
-Access https://localhost:6443 and login with the following credentials
+- Access https://localhost:6443
+
+- Login with the following credentials
 ```
 Login DN: cn=admin,dc=mycompany,dc=com
 Password: admin
 ```
 
-Import the file `springboot-ldap/ldap/ldap-mycompany-com.ldif`
+- Import the file `springboot-ldap/ldap/ldap-mycompany-com.ldif`
 
 ### Check users imported
 
@@ -70,7 +72,9 @@ In a terminal and inside `springboot-ldap` root folder, run
 
 ## Testing using curl
 
-In a terminal, call the endpoint `/api/public`
+1. Open a terminal
+
+2. Call the endpoint `/api/public`
 ```
 curl -i http://localhost:8080/api/public
 ```
@@ -81,7 +85,7 @@ HTTP/1.1 200
 It is public.
 ```
 
-Try to call the endpoint `/api/private` without credentials
+3. Try to call the endpoint `/api/private` without credentials
 ``` 
 curl -i http://localhost:8080/api/private
 ```
@@ -98,18 +102,18 @@ HTTP/1.1 401
 }
 ```
 
-Call the endpoint `/api/private` again. This time informing `username` and `password`
+4. Call the endpoint `/api/private` again. This time informing `username` and `password`
 ``` 
 curl -i -u bgates:123 http://localhost:8080/api/private
 ```
 
-It will return:
+It will return
 ```
 HTTP/1.1 200
 bgates, it is private.
 ```
 
-Call the endpoint `/api/private` informing an invalid password
+5. Call the endpoint `/api/private` informing an invalid password
 ``` 
 curl -i -u bgates:124 http://localhost:8080/api/private
 ```
@@ -126,7 +130,7 @@ HTTP/1.1 401
 }
 ```
 
-Call the endpoint `/api/private` informing a non-existing user
+6. Call the endpoint `/api/private` informing a non-existing user
 ``` 
 curl -i -u cslim:123 http://localhost:8080/api/private
 ```
@@ -147,15 +151,17 @@ HTTP/1.1 401
 
 ![swagger](images/swagger.png)
 
-Access http://localhost:8080/swagger-ui.html and click on `simple-service-controller` to open it.
+1. Access http://localhost:8080/swagger-ui.html
 
-Then, click on `GET /api/public`, on `Try it out` button and, finally, on `Execute` button. It will return
+2. Click on `simple-service-controller` to open it.
+
+3. Click on `GET /api/public`, on `Try it out` button and, finally, on `Execute` button. It will return
 ```
 Code: 200
 Response Body: It is public.
 ```
 
-Now, click on `GET /api/private`, it is a secured endpoint. Then, click on `Try it out` button and, finally, on
+4. Click on `GET /api/private`, it is a secured endpoint. Then, click on `Try it out` button and, finally, on
 `Execute` button. A window will appear to inform the username and password. Type
 ```
 username: bgates
