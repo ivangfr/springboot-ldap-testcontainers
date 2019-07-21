@@ -13,7 +13,7 @@ services:
       - "389:389"
 
   phpldapadmin-service:
-    image: osixia/phpldapadmin:0.7.2
+    image: osixia/phpldapadmin:0.8.0
     container_name: phpldapadmin-service
     hostname: phpldapadmin-service
     environment:
