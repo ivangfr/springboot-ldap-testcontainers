@@ -3,7 +3,7 @@ version: '3.7'
 services:
 
   ldap-host:
-    image: osixia/openldap:1.2.4
+    image: osixia/openldap:1.3.0
     container_name: ldap-host
     hostname: ldap-service
     environment:
@@ -13,7 +13,7 @@ services:
       - "389:389"
 
   phpldapadmin-service:
-    image: osixia/phpldapadmin:0.8.0
+    image: osixia/phpldapadmin:0.9.0
     container_name: phpldapadmin-service
     hostname: phpldapadmin-service
     environment:

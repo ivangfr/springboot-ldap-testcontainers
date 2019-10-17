@@ -1,15 +1,15 @@
 # `springboot-ldap`
 
-The goal of this project is to create a simple `Spring-Boot` REST API, called `simple-service`, and secure it with
-`Spring Security LDAP` module.
+The goal of this project is to create a simple [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
+REST API, called `simple-service`, and secure it with `Spring Security LDAP` module.
 
-## Microservice
+## Application
 
 ### simple-service
 
-Spring-Boot Java Web application that exposes two endpoints:
-- `/api/public`: endpoint that can be access by anyone, it is not secured;
-- `/api/private`: endpoint that can just be accessed by users authenticated with valid LDAP credentials.
+`Spring Boot` Java Web application that exposes two endpoints:
+- `/api/public`: that can be access by anyone, it is not secured;
+- `/api/private`: that can just be accessed by users authenticated with valid LDAP credentials.
 
 ## Start Environment
 
@@ -20,7 +20,7 @@ docker-compose up -d
 
 ## Import OpenLDAP Users
 
-The `LDIF` file we will use, `/springboot-ldap/ldap/ldap-mycompany-com.ldif`, contains already a pre-defined structure
+The `LDIF` file we will use, `springboot-ldap/ldap/ldap-mycompany-com.ldif`, contains already a pre-defined structure
 for `mycompany.com`. Basically, it has 2 groups (`employees` and `clients`) and 3 users (`Bill Gates`, `Steve Jobs`
 and `Mark Cuban`). Besides, it is defined that `Bill Gates` and `Steve Jobs` belong to `employees` group and
 `Mark Cuban` belongs to `clients` group.
@@ -155,7 +155,7 @@ HTTP/1.1 401
 
 2. Click on `simple-service-controller` to open it.
 
-3. Click on `GET /api/public`, on `Try it out` button and, finally, on `Execute` button. It will return
+3. Click on `GET /api/public`, then on `Try it out` button and, finally, on `Execute` button. It will return
 ```
 Code: 200
 Response Body: It is public.
