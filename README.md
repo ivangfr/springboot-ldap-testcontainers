@@ -75,77 +75,77 @@ In a terminal and inside `springboot-ldap` root folder, run
 1. Open a terminal
 
 2. Call the endpoint `/api/public`
-```
-curl -i http://localhost:8080/api/public
-```
+   ```
+   curl -i http://localhost:8080/api/public
+   ```
 
-It will return
-```
-HTTP/1.1 200
-It is public.
-```
+   It will return
+   ```
+   HTTP/1.1 200
+   It is public.
+   ```
 
 3. Try to call the endpoint `/api/private` without credentials
-``` 
-curl -i http://localhost:8080/api/private
-```
-
-It will return
-```
-HTTP/1.1 401
-{
-  "timestamp": "2018-06-02T22:39:18.534+0000",
-  "status": 401,
-  "error": "Unauthorized",
-  "message": "Unauthorized",
-  "path": "/api/private"
-}
-```
+   ``` 
+   curl -i http://localhost:8080/api/private
+   ```
+   
+   It will return
+   ```
+   HTTP/1.1 401
+   {
+     "timestamp": "2018-06-02T22:39:18.534+0000",
+     "status": 401,
+     "error": "Unauthorized",
+     "message": "Unauthorized",
+     "path": "/api/private"
+   }
+   ```
 
 4. Call the endpoint `/api/private` again. This time informing `username` and `password`
-``` 
-curl -i -u bgates:123 http://localhost:8080/api/private
-```
-
-It will return
-```
-HTTP/1.1 200
-bgates, it is private.
-```
+   ``` 
+   curl -i -u bgates:123 http://localhost:8080/api/private
+   ```
+   
+   It will return
+   ```
+   HTTP/1.1 200
+   bgates, it is private.
+   ```
 
 5. Call the endpoint `/api/private` informing an invalid password
-``` 
-curl -i -u bgates:124 http://localhost:8080/api/private
-```
-
-It will return
-```
-HTTP/1.1 401 
-{
-  "timestamp": "2018-06-02T22:42:29.221+0000",
-  "status": 401,
-  "error": "Unauthorized",
-  "message": "Unauthorized",
-  "path": "/api/private"
-}
-```
+   ``` 
+   curl -i -u bgates:124 http://localhost:8080/api/private
+   ```
+   
+   It will return
+   ```
+   HTTP/1.1 401 
+   {
+     "timestamp": "2018-06-02T22:42:29.221+0000",
+     "status": 401,
+     "error": "Unauthorized",
+     "message": "Unauthorized",
+     "path": "/api/private"
+   }
+   ```
 
 6. Call the endpoint `/api/private` informing a non-existing user
-``` 
-curl -i -u cslim:123 http://localhost:8080/api/private
-```
-
-It will return
-```
-HTTP/1.1 401
-{
-  "timestamp": "2018-06-02T22:44:13.617+0000",
-  "status": 401,
-  "error": "Unauthorized",
-  "message": "Unauthorized",
-  "path": "/api/private"
-}
-```
+   ``` 
+   curl -i -u cslim:123 http://localhost:8080/api/private
+   ```
+   
+   It will return
+   ```
+   HTTP/1.1 401
+   {
+     "timestamp": "2018-06-02T22:44:13.617+0000",
+     "status": 401,
+     "error": "Unauthorized",
+     "message": "Unauthorized",
+     "path": "/api/private"
+   }
+   ```
 
 ## Testing using Swagger
 
@@ -156,27 +156,28 @@ HTTP/1.1 401
 2. Click on `simple-service-controller` to open it.
 
 3. Click on `GET /api/public`, then on `Try it out` button and, finally, on `Execute` button. It will return
-```
-Code: 200
-Response Body: It is public.
-```
+   ```
+   Code: 200
+   Response Body: It is public.
+   ```
 
 4. Click on `GET /api/private`, it is a secured endpoint. Then, click on `Try it out` button and, finally, on
 `Execute` button. A window will appear to inform the username and password. Type
-```
-username: bgates
-password: 123
-```
-
-It will return
-```
-Code: 200
-Response Body: bgates, it is private.
-```
+   ```
+   username: bgates
+   password: 123
+   ```
+   
+   It will return
+   ```
+   Code: 200
+   Response Body: bgates, it is private.
+   ```
 
 ## Shutdown
 
-Run the command below to stop and remove containers, networks and volumes
-```
-docker-compose down -v
-```
+- In the terminal where `springboot-ldap` is running press `Ctrl+C` to stop the application;
+- Run the command below to stop and remove containers, networks and volumes
+  ```
+  docker-compose down -v
+  ```
