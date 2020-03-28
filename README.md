@@ -154,7 +154,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ## Testing using Swagger
 
-1. Access 1
+1. Access http://localhost:8080/swagger-ui.html
 
    ![swagger](images/swagger.png)
 
@@ -182,7 +182,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 - Go to the terminal where `simple-service` is running and press `Ctrl+C`
 
-- In `springboot-ldap` root folder, run the command below to stop and remove docker-compose containers, networks and volumes
+- In `springboot-ldap` root folder, to stop and remove docker-compose containers, networks and volumes run
   ```
   docker-compose down -v
   ```
