@@ -1,6 +1,5 @@
-package com.mycompany.simpleservice.config;
+package com.mycompany.simpleservice.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ldap.LdapProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -15,25 +14,25 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @EnableConfigurationProperties(LdapProperties.class)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private LdapProperties ldapProperties;
+    private final LdapProperties ldapProperties;
 
     @Value("${ldap.userDnPattern}")
     private String userDnPattern;
 
-    @Autowired
-    public void setLdapProperties(LdapProperties ldapProperties) {
+    public WebSecurityConfig(LdapProperties ldapProperties) {
         this.ldapProperties = ldapProperties;
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf()
-                .disable()
-                .authorizeRequests()
+        http.authorizeRequests()
                 .antMatchers("/api/private").authenticated()
-                .anyRequest().permitAll()
+                .antMatchers("/api/**").permitAll()
+                .antMatchers("/", "/csrf", "/swagger-ui.html", "/v2/api-docs", "/webjars/**", "/swagger-resources/**").permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .httpBasic();
+        http.csrf().disable();
     }
 
     @Override

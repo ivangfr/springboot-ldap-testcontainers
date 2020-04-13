@@ -7,8 +7,8 @@ The goal of this project is to create a simple [`Spring Boot`](https://docs.spri
 - **simple-service**
 
   `Spring Boot` Java Web application that exposes two endpoints:
-   - `/api/public`: that can be access by anyone, it is not secured;
-   - `/api/private`: that can just be accessed by users authenticated with valid LDAP credentials.
+   - `GET /api/public`: that can be access by anyone, it is not secured;
+   - `GET /api/private`: that can just be accessed by users authenticated with valid LDAP credentials.
 
 ## Start Environment
 
@@ -154,7 +154,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ## Testing using Swagger
 
-1. Access http://localhost:8080/swagger-ui.html
+1. Access http://localhost:8080/swagger-ui.html. All endpoints with the lock sign are secured.
 
    ![swagger](images/swagger.png)
 
@@ -166,13 +166,11 @@ There are two ways to import those users: by running a script; or by using `phpl
    Response Body: It is public.
    ```
 
-1. Click on `GET /api/private`, it is a secured endpoint. Then, click on `Try it out` button and, finally, on `Execute` button. A window will appear to inform the username and password. Type
-   ```
-   username: bgates
-   password: 123
-   ```
-   
-   It will return
+1. Click on `Authorize` button (green one, almost on the top of the page, on the right)
+
+1. In the `Basic authentication` form that will open, provide the `Bill Gates` credentials, username `bgates` and password `123`. Then, click on `Authorize` and finally on `Close`
+
+1. Click on `GET /api/private`, then click on `Try it out` button and, finally, on `Execute` button. It will return
    ```
    Code: 200
    Response Body: bgates, it is private.

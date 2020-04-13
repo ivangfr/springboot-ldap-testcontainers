@@ -6,17 +6,16 @@ import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.service.AuthorizationScope;
+import springfox.documentation.service.BasicAuth;
 import springfox.documentation.service.SecurityReference;
+import springfox.documentation.service.SecurityScheme;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.contexts.SecurityContext;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.swagger.web.SecurityConfiguration;
-import springfox.documentation.swagger.web.SecurityConfigurationBuilder;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.security.Principal;
 import java.util.Collections;
-import java.util.List;
 
 import static springfox.documentation.builders.PathSelectors.regex;
 
@@ -36,6 +35,7 @@ public class SwaggerConfig {
                 .paths(regex("/api/.*"))
                 .build()
                 .apiInfo(getApiInfo())
+                .securitySchemes(Collections.singletonList(basicAuthScheme()))
                 .securityContexts(Collections.singletonList(securityContext()))
                 .ignoredParameterTypes(Principal.class);
     }
@@ -44,24 +44,19 @@ public class SwaggerConfig {
         return new ApiInfo(appName, null, null, null, null, null, null, Collections.emptyList());
     }
 
-    @Bean
-    SecurityConfiguration security() {
-        return SecurityConfigurationBuilder.builder()
-                .useBasicAuthenticationWithAccessCodeGrant(false)
+    private SecurityContext securityContext() {
+        return SecurityContext.builder()
+                .securityReferences(Collections.singletonList(basicAuthReference()))
+                .forPaths(regex("/api/private|/api/private/.*"))
                 .build();
     }
 
-    private SecurityContext securityContext() {
-        return SecurityContext.builder()
-                .securityReferences(defaultAuth())
-                .forPaths(regex("/api/private")).build();
+    private SecurityScheme basicAuthScheme() {
+        return new BasicAuth("basicAuth");
     }
 
-    List<SecurityReference> defaultAuth() {
-        AuthorizationScope authorizationScope = new AuthorizationScope("global", "accessEverything");
-        AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
-        authorizationScopes[0] = authorizationScope;
-        return Collections.singletonList(new SecurityReference("Authorization", authorizationScopes));
+    private SecurityReference basicAuthReference() {
+        return new SecurityReference("basicAuth", new AuthorizationScope[0]);
     }
 
 }
