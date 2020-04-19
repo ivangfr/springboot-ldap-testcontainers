@@ -126,13 +126,6 @@ There are two ways to import those users: by running a script; or by using `phpl
    It will return
    ```
    HTTP/1.1 401 
-   {
-     "timestamp": "2018-06-02T22:42:29.221+0000",
-     "status": 401,
-     "error": "Unauthorized",
-     "message": "Unauthorized",
-     "path": "/api/private"
-   }
    ```
 
 1. Call the endpoint `/api/private` informing a non-existing user
@@ -143,18 +136,11 @@ There are two ways to import those users: by running a script; or by using `phpl
    It will return
    ```
    HTTP/1.1 401
-   {
-     "timestamp": "2018-06-02T22:44:13.617+0000",
-     "status": 401,
-     "error": "Unauthorized",
-     "message": "Unauthorized",
-     "path": "/api/private"
-   }
    ```
 
 ## Testing using Swagger
 
-1. Access http://localhost:8080/swagger-ui.html. All endpoints with the lock sign are secured.
+1. Access http://localhost:8080/swagger-ui.html
 
    ![swagger](images/swagger.png)
 
