@@ -10,6 +10,12 @@ The goal of this project is to create a simple [`Spring Boot`](https://docs.spri
    - `GET /api/public`: that can be access by anyone, it is not secured;
    - `GET /api/private`: that can just be accessed by users authenticated with valid LDAP credentials.
 
+## Prerequisites
+
+- `Java 11+`
+- `Docker`
+- `Docker-Compose`
+
 ## Start Environment
 
 - Open a terminal and inside `springboot-ldap` root folder run
@@ -81,7 +87,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 1. Call the endpoint `/api/public`
    ```
-   curl -i http://localhost:8080/api/public
+   curl -i localhost:8080/api/public
    ```
 
    It will return
@@ -92,7 +98,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 1. Try to call the endpoint `/api/private` without credentials
    ``` 
-   curl -i http://localhost:8080/api/private
+   curl -i localhost:8080/api/private
    ```
    
    It will return
@@ -109,7 +115,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 1. Call the endpoint `/api/private` again. This time informing `username` and `password`
    ``` 
-   curl -i -u bgates:123 http://localhost:8080/api/private
+   curl -i -u bgates:123 localhost:8080/api/private
    ```
    
    It will return
@@ -120,7 +126,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 1. Call the endpoint `/api/private` informing an invalid password
    ``` 
-   curl -i -u bgates:124 http://localhost:8080/api/private
+   curl -i -u bgates:124 localhost:8080/api/private
    ```
    
    It will return
@@ -130,7 +136,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 1. Call the endpoint `/api/private` informing a non-existing user
    ``` 
-   curl -i -u cslim:123 http://localhost:8080/api/private
+   curl -i -u cslim:123 localhost:8080/api/private
    ```
    
    It will return

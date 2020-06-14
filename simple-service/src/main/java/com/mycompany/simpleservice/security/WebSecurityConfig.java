@@ -1,5 +1,6 @@
 package com.mycompany.simpleservice.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ldap.LdapProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -11,6 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+@RequiredArgsConstructor
 @Configuration
 @EnableWebSecurity
 @EnableConfigurationProperties(LdapProperties.class)
@@ -20,10 +22,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Value("${ldap.userDnPattern}")
     private String userDnPattern;
-
-    public WebSecurityConfig(LdapProperties ldapProperties) {
-        this.ldapProperties = ldapProperties;
-    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
