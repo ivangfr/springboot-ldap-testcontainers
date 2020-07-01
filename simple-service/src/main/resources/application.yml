@@ -16,7 +16,12 @@ management:
     enabled: false
   endpoints:
     web:
-      exposure.include: "beans,env,health,info,metrics,mappings"
+      exposure.include: beans, env, health, info, metrics, mappings
   endpoint:
     health:
       showDetails: always
+
+springdoc:
+  show-actuator: true
+  swagger-ui:
+    groups-order: DESC

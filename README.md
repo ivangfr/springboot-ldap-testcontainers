@@ -12,9 +12,9 @@ The goal of this project is to create a simple [`Spring Boot`](https://docs.spri
 
 ## Prerequisites
 
-- `Java 11+`
-- `Docker`
-- `Docker-Compose`
+- [`Java 11+`](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
+- [`Docker`](https://www.docker.com/)
+- [`Docker-Compose`](https://docs.docker.com/compose/install/)
 
 ## Start Environment
 
@@ -90,7 +90,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    curl -i localhost:8080/api/public
    ```
 
-   It will return
+   It should return
    ```
    HTTP/1.1 200
    It is public.
@@ -101,7 +101,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    curl -i localhost:8080/api/private
    ```
    
-   It will return
+   It should return
    ```
    HTTP/1.1 401
    {
@@ -118,7 +118,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    curl -i -u bgates:123 localhost:8080/api/private
    ```
    
-   It will return
+   It should return
    ```
    HTTP/1.1 200
    bgates, it is private.
@@ -129,7 +129,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    curl -i -u bgates:124 localhost:8080/api/private
    ```
    
-   It will return
+   It should return
    ```
    HTTP/1.1 401 
    ```
@@ -139,7 +139,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    curl -i -u cslim:123 localhost:8080/api/private
    ```
    
-   It will return
+   It should return
    ```
    HTTP/1.1 401
    ```
@@ -148,11 +148,11 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 1. Access http://localhost:8080/swagger-ui.html
 
-   ![swagger](images/swagger.png)
+   ![swagger](images/simple-service-swagger.png)
 
-1. Click on `simple-service-controller` to open it.
+1. Click on `GET /api/public`, then on `Try it out` button and, finally, on `Execute` button.
 
-1. Click on `GET /api/public`, then on `Try it out` button and, finally, on `Execute` button. It will return
+   It should return
    ```
    Code: 200
    Response Body: It is public.
@@ -160,9 +160,11 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 1. Click on `Authorize` button (green one, almost on the top of the page, on the right)
 
-1. In the `Basic authentication` form that will open, provide the `Bill Gates` credentials, username `bgates` and password `123`. Then, click on `Authorize` and finally on `Close`
+1. In the form that opens, provide the `Bill Gates` credentials, i.e, username `bgates` and password `123`. Then, click on `Authorize` and finally on `Close`
 
-1. Click on `GET /api/private`, then click on `Try it out` button and, finally, on `Execute` button. It will return
+1. Click on `GET /api/private`, then click on `Try it out` button and, finally, on `Execute` button.
+
+   It should return
    ```
    Code: 200
    Response Body: bgates, it is private.
