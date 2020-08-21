@@ -4,7 +4,7 @@ The goal of this project is to create a simple [`Spring Boot`](https://docs.spri
 
 ## Application
 
-- **simple-service**
+- ### simple-service
 
   `Spring Boot` Java Web application that exposes two endpoints:
    - `GET /api/public`: that can be access by anyone, it is not secured;
@@ -30,7 +30,7 @@ The goal of this project is to create a simple [`Spring Boot`](https://docs.spri
 
 ## Import OpenLDAP Users
 
-The `LDIF` file we will use, `springboot-ldap/ldap/ldap-mycompany-com.ldif`, contains already a pre-defined structure for `mycompany.com`. Basically, it has 2 groups (`employees` and `clients`) and 3 users (`Bill Gates`, `Steve Jobs` and `Mark Cuban`). Besides, it is defined that `Bill Gates` and `Steve Jobs` belong to `employees` group and `Mark Cuban` belongs to `clients` group.
+The `LDIF` file we will use, `springboot-ldap/ldap/ldap-mycompany-com.ldif`, contains a pre-defined structure for `mycompany.com`. Basically, it has 2 groups (`employees` and `clients`) and 3 users (`Bill Gates`, `Steve Jobs` and `Mark Cuban`). Besides, it's defined that `Bill Gates` and `Steve Jobs` belong to `employees` group and `Mark Cuban` belongs to `clients` group.
 ```
 Bill Gates > username: bgates, password: 123
 Steve Jobs > username: sjobs, password: 123
@@ -70,7 +70,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 - You should see something like
 
-  ![openldap](images/openldap.png)
+  ![phpldapadmin](images/phpldapadmin.png)
 
 ## Run application
 
