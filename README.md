@@ -72,13 +72,45 @@ There are two ways to import those users: by running a script; or by using `phpl
 
   ![phpldapadmin](images/phpldapadmin.png)
 
-## Run application
+## Run application with Maven
 
 - In a terminal, make use you are in `springboot-ldap` root folder
 
 - Run the following command to start `simple-service`
   ```
   ./mvnw clean spring-boot:run --projects simple-service
+  ```
+
+## Run application as Docker container
+
+- ### Build Docker Image
+  
+  - In a terminal, make sure you are in `springboot-ldap` root folder 
+  - Run the following script
+    - JVM
+      ```
+      ./docker-build.sh
+      ```
+    - Native (it’s not working yet)
+      ```
+      ./docker-build.sh native
+      ```
+
+- ### Environment Variable
+
+  | Environment Variable | Description                                             |
+  | -------------------- | ------------------------------------------------------- |
+  | `LDAP_HOST`          | Specify host of the `LDAP` to use (default `localhost`) |
+  | `LDAP_PORT`          | Specify port of the `LDAP` to use (default `389`)       |
+
+- ### Start Docker Container
+  
+  In a terminal, run the following command
+  ```
+  docker run -d --rm --name simple-service -p 8080:8080 \
+    -e LDAP_HOST=openldap \
+    --network springboot-ldap_default \
+    docker.mycompany.com/simple-service:1.0.0
   ```
 
 ## Testing using curl
@@ -104,13 +136,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    It should return
    ```
    HTTP/1.1 401
-   {
-     "timestamp": "2018-06-02T22:39:18.534+0000",
-     "status": 401,
-     "error": "Unauthorized",
-     "message": "Unauthorized",
-     "path": "/api/private"
-   }
+   { "timestamp": "...", "status": 401, "error": "Unauthorized", "message": "Unauthorized", "path": "/api/private" }
    ```
 
 1. Call the endpoint `/api/private` again. This time informing `username` and `password`
@@ -150,7 +176,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
    ![swagger](images/simple-service-swagger.png)
 
-1. Click on `GET /api/public`, then on `Try it out` button and, finally, on `Execute` button.
+1. Click `GET /api/public` to open it; then, click `Try it out` button and, finally, `Execute` button.
 
    It should return
    ```
@@ -158,11 +184,11 @@ There are two ways to import those users: by running a script; or by using `phpl
    Response Body: It is public.
    ```
 
-1. Click on `Authorize` button (green one, almost on the top of the page, on the right)
+1. Click `Authorize` button (green-white one, located at top-right of the page)
 
-1. In the form that opens, provide the `Bill Gates` credentials, i.e, username `bgates` and password `123`. Then, click on `Authorize` and finally on `Close`
+1. In the form that opens, provide the `Bill Gates` credentials, i.e, username `bgates` and password `123`. Then, click `Authorize` button, and to finalize, click `Close` button
 
-1. Click on `GET /api/private`, then click on `Try it out` button and, finally, on `Execute` button.
+1. Click `GET /api/private` to open it; then click `Try it out` button and, finally, `Execute` button.
 
    It should return
    ```
@@ -172,9 +198,13 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ## Shutdown
 
-- Go to the terminal where `simple-service` is running and press `Ctrl+C`
-
-- In `springboot-ldap` root folder, to stop and remove docker-compose containers, networks and volumes run
+- To stop `simple-service` application
+  - If it was started with `Maven`, go to the terminal where it is running and press `Ctrl+C`
+  - If it was started as a Docker container, run in a terminal the command below
+    ```
+    docker stop simple-service
+    ```
+- To stop and remove docker-compose containers, network and volumes, in a terminal and inside `springboot-ldap` root folder, run the following command
   ```
   docker-compose down -v
   ```

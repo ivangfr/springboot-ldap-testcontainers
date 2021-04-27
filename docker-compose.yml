@@ -2,23 +2,21 @@ version: '3.8'
 
 services:
 
-  ldap-host:
+  openldap:
     image: osixia/openldap:1.5.0
-    container_name: ldap-host
-    hostname: ldap-service
+    container_name: openldap
     environment:
       - LDAP_ORGANISATION="MyCompany Inc."
       - LDAP_DOMAIN=mycompany.com
     ports:
       - "389:389"
 
-  phpldapadmin-service:
+  phpldapadmin:
     image: osixia/phpldapadmin:0.9.0
-    container_name: phpldapadmin-service
-    hostname: phpldapadmin-service
+    container_name: phpldapadmin
     environment:
-      - PHPLDAPADMIN_LDAP_HOSTS=ldap-host
+      - PHPLDAPADMIN_LDAP_HOSTS=openldap
     ports:
       - "6443:443"
     depends_on:
-      - ldap-host
+      - openldap
