@@ -211,140 +211,97 @@ There are two ways to import those users: by running a script; or by using `phpl
 - Run the following steps in a terminal and inside `springboot-keycloak-openldap` root folder
   ```
   mkdir -p simple-service/src/main/resources/META-INF/native-image
-  
   ./mvnw clean package --projects simple-service -DskipTests
-  
   cd simple-service
-  
   java -jar -agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image target/simple-service-1.0.0.jar
   ```
-
 - Once the application is running, exercise it by calling its endpoints using `curl` and `Swagger` so that `Tracing Agent` observes the behavior of the application running on Java HotSpot VM and writes configuration files for reflection, JNI, resource, and proxy usage to automatically configure the native image generator.
-
 - It should generate `JSON` files in `simple-service/src/main/resources/META-INF/native-image` such as: `jni-config.json`, `proxy-config.json`, `reflect-config.json`, `resource-config.json` and `serialization-config.json`.
 
 ## Issues
 
-The Docker native image is built successfully. However, the following exception is thrown at application startup
+The Docker native image is built and startup successfully. However, when calling the private endpoint informing valid or invalid credentials for the basic authentication, the application returns `401` and the following exception is logged
 ```
-ERROR 1 --- [           main] o.s.boot.SpringApplication               : Application run failed
-
-org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'springSecurityFilterChain' defined in class path resource [org/springframework/security/config/annotation/web/configuration/WebSecurityConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [javax.servlet.Filter]: Factory method 'springSecurityFilterChain' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'mvcHandlerMappingIntrospector' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Invocation of init method failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'resourceHandlerMapping' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.web.servlet.HandlerMapping]: Factory method 'resourceHandlerMapping' threw exception; nested exception is io.github.classgraph.ClassGraphException: Uncaught exception during scan
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:658) ~[na:na]
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:486) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1334) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1177) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:564) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[na:na]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:322) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[na:na]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:944) ~[na:na]
-	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:918) ~[na:na]
-	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:583) ~[na:na]
-	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:145) ~[na:na]
-	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:758) ~[com.mycompany.simpleservice.SimpleServiceApplication:2.5.0]
-	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:438) ~[com.mycompany.simpleservice.SimpleServiceApplication:2.5.0]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:337) ~[com.mycompany.simpleservice.SimpleServiceApplication:2.5.0]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1336) ~[com.mycompany.simpleservice.SimpleServiceApplication:2.5.0]
-	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1325) ~[com.mycompany.simpleservice.SimpleServiceApplication:2.5.0]
-	at com.mycompany.simpleservice.SimpleServiceApplication.main(SimpleServiceApplication.java:10) ~[com.mycompany.simpleservice.SimpleServiceApplication:na]
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [javax.servlet.Filter]: Factory method 'springSecurityFilterChain' threw exception; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'mvcHandlerMappingIntrospector' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Invocation of init method failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'resourceHandlerMapping' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.web.servlet.HandlerMapping]: Factory method 'resourceHandlerMapping' threw exception; nested exception is io.github.classgraph.ClassGraphException: Uncaught exception during scan
-	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:185) ~[na:na]
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[na:na]
-	... 21 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'mvcHandlerMappingIntrospector' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Invocation of init method failed; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'resourceHandlerMapping' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.web.servlet.HandlerMapping]: Factory method 'resourceHandlerMapping' threw exception; nested exception is io.github.classgraph.ClassGraphException: Uncaught exception during scan
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1786) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:602) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[na:na]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:213) ~[na:na]
-	at org.springframework.context.support.AbstractApplicationContext.getBean(AbstractApplicationContext.java:1160) ~[na:na]
-	at org.springframework.security.config.annotation.web.configurers.CorsConfigurer$MvcCorsFilter.getMvcCorsFilter(CorsConfigurer.java:111) ~[na:na]
-	at org.springframework.security.config.annotation.web.configurers.CorsConfigurer$MvcCorsFilter.access$000(CorsConfigurer.java:94) ~[na:na]
-	at org.springframework.security.config.annotation.web.configurers.CorsConfigurer.getCorsFilter(CorsConfigurer.java:89) ~[na:na]
-	at org.springframework.security.config.annotation.web.configurers.CorsConfigurer.configure(CorsConfigurer.java:67) ~[na:na]
-	at org.springframework.security.config.annotation.web.configurers.CorsConfigurer.configure(CorsConfigurer.java:41) ~[na:na]
-	at org.springframework.security.config.annotation.AbstractConfiguredSecurityBuilder.configure(AbstractConfiguredSecurityBuilder.java:349) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.5.0]
-	at org.springframework.security.config.annotation.AbstractConfiguredSecurityBuilder.doBuild(AbstractConfiguredSecurityBuilder.java:303) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.5.0]
-	at org.springframework.security.config.annotation.AbstractSecurityBuilder.build(AbstractSecurityBuilder.java:38) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.5.0]
-	at org.springframework.security.config.annotation.web.builders.WebSecurity.performBuild(WebSecurity.java:285) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.5.0]
-	at org.springframework.security.config.annotation.web.builders.WebSecurity.performBuild(WebSecurity.java:83) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.5.0]
-	at org.springframework.security.config.annotation.AbstractConfiguredSecurityBuilder.doBuild(AbstractConfiguredSecurityBuilder.java:305) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.5.0]
-	at org.springframework.security.config.annotation.AbstractSecurityBuilder.build(AbstractSecurityBuilder.java:38) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.5.0]
-	at org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration.springSecurityFilterChain(WebSecurityConfiguration.java:127) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.5.0]
-	at java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
-	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:154) ~[na:na]
-	... 22 common frames omitted
-Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'resourceHandlerMapping' defined in class path resource [org/springframework/boot/autoconfigure/web/servlet/WebMvcAutoConfiguration$EnableWebMvcConfiguration.class]: Bean instantiation via factory method failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.web.servlet.HandlerMapping]: Factory method 'resourceHandlerMapping' threw exception; nested exception is io.github.classgraph.ClassGraphException: Uncaught exception during scan
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:658) ~[na:na]
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiateUsingFactoryMethod(ConstructorResolver.java:638) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateUsingFactoryMethod(AbstractAutowireCapableBeanFactory.java:1334) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1177) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:564) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:524) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:335) ~[na:na]
-	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:333) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:208) ~[na:na]
-	at org.springframework.beans.factory.support.DefaultListableBeanFactory.getBeansOfType(DefaultListableBeanFactory.java:671) ~[na:na]
-	at org.springframework.context.support.AbstractApplicationContext.getBeansOfType(AbstractApplicationContext.java:1308) ~[na:na]
-	at org.springframework.beans.factory.BeanFactoryUtils.beansOfTypeIncludingAncestors(BeanFactoryUtils.java:378) ~[na:na]
-	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.initHandlerMappings(HandlerMappingIntrospector.java:227) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.3.7]
-	at org.springframework.web.servlet.handler.HandlerMappingIntrospector.afterPropertiesSet(HandlerMappingIntrospector.java:123) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.3.7]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.invokeInitMethods(AbstractAutowireCapableBeanFactory.java:1845) ~[na:na]
-	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1782) ~[na:na]
-	... 44 common frames omitted
-Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [org.springframework.web.servlet.HandlerMapping]: Factory method 'resourceHandlerMapping' threw exception; nested exception is io.github.classgraph.ClassGraphException: Uncaught exception during scan
-	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:185) ~[na:na]
-	at org.springframework.beans.factory.support.ConstructorResolver.instantiate(ConstructorResolver.java:653) ~[na:na]
-	... 60 common frames omitted
-Caused by: io.github.classgraph.ClassGraphException: Uncaught exception during scan
-	at io.github.classgraph.ClassGraph.scan(ClassGraph.java:1319) ~[na:na]
-	at io.github.classgraph.ClassGraph.scan(ClassGraph.java:1337) ~[na:na]
-	at io.github.classgraph.ClassGraph.scan(ClassGraph.java:1350) ~[na:na]
-	at org.webjars.WebJarAssetLocator.scanForWebJars(WebJarAssetLocator.java:144) ~[com.mycompany.simpleservice.SimpleServiceApplication:na]
-	at org.webjars.WebJarAssetLocator.<init>(WebJarAssetLocator.java:150) ~[com.mycompany.simpleservice.SimpleServiceApplication:na]
-	at org.springframework.web.servlet.resource.WebJarsResourceResolver.<init>(WebJarsResourceResolver.java:61) ~[na:na]
-	at org.springframework.web.servlet.config.annotation.ResourceChainRegistration.getResourceResolvers(ResourceChainRegistration.java:114) ~[na:na]
-	at org.springframework.web.servlet.config.annotation.ResourceHandlerRegistration.getRequestHandler(ResourceHandlerRegistration.java:195) ~[na:na]
-	at org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry.getHandlerMapping(ResourceHandlerRegistry.java:171) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.3.7]
-	at org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupport.resourceHandlerMapping(WebMvcConfigurationSupport.java:597) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.3.7]
-	at java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
-	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:154) ~[na:na]
-	... 61 common frames omitted
-Caused by: java.lang.IllegalArgumentException: Exception while invoking method "list"
-	at nonapi.io.github.classgraph.utils.ReflectionUtils.invokeMethod(ReflectionUtils.java:268) ~[na:na]
-	at nonapi.io.github.classgraph.utils.ReflectionUtils.invokeMethod(ReflectionUtils.java:301) ~[na:na]
-	at io.github.classgraph.ModuleReaderProxy.list(ModuleReaderProxy.java:107) ~[na:na]
-	at io.github.classgraph.ClasspathElementModule.scanPaths(ClasspathElementModule.java:277) ~[na:na]
-	at io.github.classgraph.Scanner$5.processWorkUnit(Scanner.java:1026) ~[na:na]
-	at io.github.classgraph.Scanner$5.processWorkUnit(Scanner.java:1020) ~[na:na]
-	at nonapi.io.github.classgraph.concurrency.WorkQueue.runWorkLoop(WorkQueue.java:246) ~[na:na]
-	at nonapi.io.github.classgraph.concurrency.WorkQueue.runWorkQueue(WorkQueue.java:161) ~[na:na]
-	at io.github.classgraph.Scanner.processWorkUnits(Scanner.java:342) ~[na:na]
-	at io.github.classgraph.Scanner.openClasspathElementsThenScan(Scanner.java:1018) ~[na:na]
-	at io.github.classgraph.Scanner.call(Scanner.java:1078) ~[na:na]
-	at io.github.classgraph.Scanner.call(Scanner.java:78) ~[na:na]
-	at java.util.concurrent.FutureTask.run(FutureTask.java:264) ~[na:na]
-	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) ~[na:na]
-	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) ~[na:na]
-	at java.lang.Thread.run(Thread.java:834) ~[na:na]
-	at com.oracle.svm.core.thread.JavaThreads.threadStartRoutine(JavaThreads.java:519) ~[na:na]
-	at com.oracle.svm.core.posix.thread.PosixJavaThreads.pthreadStartRoutine(PosixJavaThreads.java:192) ~[na:na]
-Caused by: java.lang.reflect.InvocationTargetException: null
-	at java.lang.reflect.Method.invoke(Method.java:566) ~[na:na]
-	at nonapi.io.github.classgraph.utils.ReflectionUtils.invokeMethod(ReflectionUtils.java:260) ~[na:na]
-	... 17 common frames omitted
-Caused by: com.oracle.svm.core.jdk.UnsupportedFeatureError: Unsupported method jdk.internal.module.SystemModuleFinders$SystemImage.reader() is reachable
-	at com.oracle.svm.core.util.VMError.unsupportedFeature(VMError.java:87) ~[na:na]
-	at jdk.internal.module.SystemModuleFinders$SystemImage.reader(SystemModuleFinders.java:385) ~[na:na]
-	at jdk.internal.module.SystemModuleFinders$ModuleContentSpliterator.<init>(SystemModuleFinders.java:508) ~[na:na]
-	at jdk.internal.module.SystemModuleFinders$SystemModuleReader.list(SystemModuleFinders.java:483) ~[na:na]
-	... 19 common frames omitted
+SEVERE: Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Filter execution threw an exception] with root cause
+com.oracle.svm.core.jdk.UnsupportedFeatureError: JDK11OrLater: Target_java_lang_ClassLoader.trySetObjectField(String name, Object obj)
+	at com.oracle.svm.core.util.VMError.unsupportedFeature(VMError.java:87)
+	at java.lang.ClassLoader.trySetObjectField(ClassLoader.java:315)
+	at java.lang.ClassLoader.createOrGetClassLoaderValueMap(ClassLoader.java:2993)
+	at java.lang.System$2.createOrGetClassLoaderValueMap(System.java:2126)
+	at jdk.internal.loader.AbstractClassLoaderValue.map(AbstractClassLoaderValue.java:266)
+	at jdk.internal.loader.AbstractClassLoaderValue.computeIfAbsent(AbstractClassLoaderValue.java:189)
+	at javax.naming.spi.NamingManager.getInitialContext(NamingManager.java:711)
+	at javax.naming.InitialContext.getDefaultInitCtx(InitialContext.java:305)
+	at javax.naming.InitialContext.init(InitialContext.java:236)
+	at javax.naming.ldap.InitialLdapContext.<init>(InitialLdapContext.java:154)
+	at org.springframework.ldap.core.support.LdapContextSource.getDirContextInstance(LdapContextSource.java:42)
+	at org.springframework.ldap.core.support.AbstractContextSource.createContext(AbstractContextSource.java:350)
+	at org.springframework.ldap.core.support.AbstractContextSource.doGetContext(AbstractContextSource.java:146)
+	at org.springframework.ldap.core.support.AbstractContextSource.getContext(AbstractContextSource.java:137)
+	at org.springframework.security.ldap.authentication.BindAuthenticator.bindWithDn(BindAuthenticator.java:104)
+	at org.springframework.security.ldap.authentication.BindAuthenticator.bindWithDn(BindAuthenticator.java:93)
+	at org.springframework.security.ldap.authentication.BindAuthenticator.authenticate(BindAuthenticator.java:74)
+	at org.springframework.security.ldap.authentication.LdapAuthenticationProvider.doAuthentication(LdapAuthenticationProvider.java:174)
+	at org.springframework.security.ldap.authentication.AbstractLdapAuthenticationProvider.authenticate(AbstractLdapAuthenticationProvider.java:81)
+	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:182)
+	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:201)
+	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:155)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
+	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
+	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110)
+	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
+	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211)
+	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183)
+	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
+	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:96)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
+	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357)
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:893)
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1707)
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
+	at java.lang.Thread.run(Thread.java:834)
+	at com.oracle.svm.core.thread.JavaThreads.threadStartRoutine(JavaThreads.java:519)
+	at com.oracle.svm.core.posix.thread.PosixJavaThreads.pthreadStartRoutine(PosixJavaThreads.java:192)
 ```
