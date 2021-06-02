@@ -45,10 +45,10 @@
                         <builder>paketobuildpacks/builder:tiny</builder>
                         <name>${docker-image.prefix}/${project.artifactId}:${project.version}</name>
                         <env>
-                            <BP_BOOT_NATIVE_IMAGE>1</BP_BOOT_NATIVE_IMAGE>
-                            <BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                            <BP_NATIVE_IMAGE>true</BP_NATIVE_IMAGE>
+                            <BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
                                 --enable-all-security-services
-                            </BP_BOOT_NATIVE_IMAGE_BUILD_ARGUMENTS>
+                            </BP_NATIVE_IMAGE_BUILD_ARGUMENTS>
                         </env>
                     </image>
                 </configuration>
