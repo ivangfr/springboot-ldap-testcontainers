@@ -201,10 +201,13 @@ There are two ways to import those users: by running a script; or by using `phpl
   ```
   docker-compose down -v
   ```
-- To remove Docker images created by this project, run
-  ```
-  ./remove-docker-images.sh
-  ```
+
+## Cleanup
+
+To remove the Docker image created by this project, go to a terminal and run the following command
+```
+docker rmi ivanfranchin/simple-service:1.0.0
+```
 
 ## Using Tracing Agent to generate the missing configuration for native image
 
@@ -227,198 +230,87 @@ The Docker native image is built and startup successfully. However, I am facing 
 
 - When calling the private endpoint informing valid or invalid credentials for the basic authentication, the application returns `401` and the following exception is logged
   ```
-  SEVERE: Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Filter execution threw an exception] with root cause
+  ERROR 1 --- [nio-8080-exec-5] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception   [Filter execution threw an exception] with root cause
+  
   com.oracle.svm.core.jdk.UnsupportedFeatureError: JDK11OrLater: Target_java_lang_ClassLoader.trySetObjectField(String name, Object obj)
-  	at com.oracle.svm.core.util.VMError.unsupportedFeature(VMError.java:87)
-  	at java.lang.ClassLoader.trySetObjectField(ClassLoader.java:330)
-  	at java.lang.ClassLoader.createOrGetClassLoaderValueMap(ClassLoader.java:2993)
-  	at java.lang.System$2.createOrGetClassLoaderValueMap(System.java:2126)
-  	at jdk.internal.loader.AbstractClassLoaderValue.map(AbstractClassLoaderValue.java:266)
-  	at jdk.internal.loader.AbstractClassLoaderValue.computeIfAbsent(AbstractClassLoaderValue.java:189)
-  	at javax.naming.spi.NamingManager.getInitialContext(NamingManager.java:722)
-  	at javax.naming.InitialContext.getDefaultInitCtx(InitialContext.java:305)
-  	at javax.naming.InitialContext.init(InitialContext.java:236)
-  	at javax.naming.ldap.InitialLdapContext.<init>(InitialLdapContext.java:154)
-  	at org.springframework.ldap.core.support.LdapContextSource.getDirContextInstance(LdapContextSource.java:42)
-  	at org.springframework.ldap.core.support.AbstractContextSource.createContext(AbstractContextSource.java:350)
-  	at org.springframework.ldap.core.support.AbstractContextSource.doGetContext(AbstractContextSource.java:146)
-  	at org.springframework.ldap.core.support.AbstractContextSource.getContext(AbstractContextSource.java:137)
-  	at org.springframework.security.ldap.authentication.BindAuthenticator.bindWithDn(BindAuthenticator.java:104)
-  	at org.springframework.security.ldap.authentication.BindAuthenticator.bindWithDn(BindAuthenticator.java:93)
-  	at org.springframework.security.ldap.authentication.BindAuthenticator.authenticate(BindAuthenticator.java:74)
-  	at org.springframework.security.ldap.authentication.LdapAuthenticationProvider.doAuthentication(LdapAuthenticationProvider.java:174)
-  	at org.springframework.security.ldap.authentication.AbstractLdapAuthenticationProvider.authenticate(AbstractLdapAuthenticationProvider.java:81)
-  	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:182)
-  	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:201)
-  	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:155)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
-  	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
-  	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110)
-  	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211)
-  	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183)
-  	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
-  	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:96)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
-  	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
-  	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
-  	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)
-  	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
-  	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
-  	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357)
-  	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)
-  	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
-  	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:893)
-  	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1707)
-  	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
-  	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-  	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-  	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
-  	at java.lang.Thread.run(Thread.java:829)
-  	at com.oracle.svm.core.thread.JavaThreads.threadStartRoutine(JavaThreads.java:553)
-  	at com.oracle.svm.core.posix.thread.PosixJavaThreads.pthreadStartRoutine(PosixJavaThreads.java:192)
-  ```
-
-- When accessing Swagger website
-  ```
-  SEVERE: Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Handler dispatch failed; nested exception is com.oracle.svm.core.jdk.UnsupportedFeatureError: Proxy class defined by interfaces [interface org.springframework.web.bind.annotation.PathVariable, interface org.springframework.core.annotation.SynthesizedAnnotation] not found. Generating proxy classes at runtime is not supported. Proxy classes need to be defined at image build time by specifying the list of interfaces that they implement. To define proxy classes use -H:DynamicProxyConfigurationFiles=<comma-separated-config-files> and -H:DynamicProxyConfigurationResources=<comma-separated-config-resources> options.] with root cause
-  com.oracle.svm.core.jdk.UnsupportedFeatureError: Proxy class defined by interfaces [interface org.springframework.web.bind.annotation.PathVariable, interface org.springframework.core.annotation.SynthesizedAnnotation] not found. Generating proxy classes at runtime is not supported. Proxy classes need to be defined at image build time by specifying the list of interfaces that they implement. To define proxy classes use -H:DynamicProxyConfigurationFiles=<comma-separated-config-files> and -H:DynamicProxyConfigurationResources=<comma-separated-config-resources> options.
-  	at com.oracle.svm.core.util.VMError.unsupportedFeature(VMError.java:87)
-  	at com.oracle.svm.reflect.proxy.DynamicProxySupport.getProxyClass(DynamicProxySupport.java:113)
-  	at java.lang.reflect.Proxy.getProxyConstructor(Proxy.java:66)
-  	at java.lang.reflect.Proxy.newProxyInstance(Proxy.java:1006)
-  	at org.springframework.core.annotation.SynthesizedMergedAnnotationInvocationHandler.createProxy(SynthesizedMergedAnnotationInvocationHandler.java:271)
-  	at org.springframework.core.annotation.TypeMappedAnnotation.createSynthesized(TypeMappedAnnotation.java:335)
-  	at org.springframework.core.annotation.AbstractMergedAnnotation.synthesize(AbstractMergedAnnotation.java:210)
-  	at org.springframework.core.annotation.AnnotationUtils.synthesizeAnnotation(AnnotationUtils.java:1194)
-  	at org.springframework.core.annotation.AnnotationUtils.synthesizeAnnotationArray(AnnotationUtils.java:1280)
-  	at org.springframework.core.annotation.SynthesizingMethodParameter.adaptAnnotationArray(SynthesizingMethodParameter.java:104)
-  	at org.springframework.core.MethodParameter.getParameterAnnotations(MethodParameter.java:645)
-  	at org.springframework.web.method.HandlerMethod$HandlerMethodParameter.getParameterAnnotations(HandlerMethod.java:502)
-  	at org.springframework.core.MethodParameter.getParameterAnnotation(MethodParameter.java:668)
-  	at org.springframework.core.MethodParameter.hasParameterAnnotation(MethodParameter.java:683)
-  	at org.springframework.web.method.annotation.ModelFactory.findSessionAttributeArguments(ModelFactory.java:182)
-  	at org.springframework.web.method.annotation.ModelFactory.initModel(ModelFactory.java:114)
-  	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:871)
-  	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:808)
-  	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:87)
-  	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:1063)
-  	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:963)
-  	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1006)
-  	at org.springframework.web.servlet.FrameworkServlet.doGet(FrameworkServlet.java:898)
-  	at javax.servlet.http.HttpServlet.service(HttpServlet.java:626)
-  	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:883)
-  	at javax.servlet.http.HttpServlet.service(HttpServlet.java:733)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:227)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:327)
-  	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.invoke(FilterSecurityInterceptor.java:115)
-  	at org.springframework.security.web.access.intercept.FilterSecurityInterceptor.doFilter(FilterSecurityInterceptor.java:81)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:121)
-  	at org.springframework.security.web.access.ExceptionTranslationFilter.doFilter(ExceptionTranslationFilter.java:115)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:126)
-  	at org.springframework.security.web.session.SessionManagementFilter.doFilter(SessionManagementFilter.java:81)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.authentication.AnonymousAuthenticationFilter.doFilter(AnonymousAuthenticationFilter.java:105)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter.doFilter(SecurityContextHolderAwareRequestFilter.java:149)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.savedrequest.RequestCacheAwareFilter.doFilter(RequestCacheAwareFilter.java:63)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:149)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103)
-  	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90)
-  	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110)
-  	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336)
-  	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211)
-  	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183)
-  	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358)
-  	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:96)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201)
-  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119)
-  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:189)
-  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:162)
-  	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202)
-  	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97)
-  	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542)
-  	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143)
-  	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92)
-  	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78)
-  	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357)
-  	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:374)
-  	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65)
-  	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:893)
-  	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1707)
-  	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49)
-  	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128)
-  	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628)
-  	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61)
-  	at java.lang.Thread.run(Thread.java:829)
-  	at com.oracle.svm.core.thread.JavaThreads.threadStartRoutine(JavaThreads.java:553)
-  	at com.oracle.svm.core.posix.thread.PosixJavaThreads.pthreadStartRoutine(PosixJavaThreads.java:192)
+  	at com.oracle.svm.core.util.VMError.unsupportedFeature(VMError.java:88) ~[na:na]
+  	at java.lang.ClassLoader.trySetObjectField(ClassLoader.java:253) ~[na:na]
+  	at java.lang.ClassLoader.createOrGetClassLoaderValueMap(ClassLoader.java:2993) ~[na:na]
+  	at java.lang.System$2.createOrGetClassLoaderValueMap(System.java:2126) ~[na:na]
+  	at jdk.internal.loader.AbstractClassLoaderValue.map(AbstractClassLoaderValue.java:266) ~[na:na]
+  	at jdk.internal.loader.AbstractClassLoaderValue.computeIfAbsent(AbstractClassLoaderValue.java:189) ~[na:na]
+  	at javax.naming.spi.NamingManager.getInitialContext(NamingManager.java:722) ~[na:na]
+  	at javax.naming.InitialContext.getDefaultInitCtx(InitialContext.java:305) ~[na:na]
+  	at javax.naming.InitialContext.init(InitialContext.java:236) ~[na:na]
+  	at javax.naming.ldap.InitialLdapContext.<init>(InitialLdapContext.java:154) ~[na:na]
+  	at org.springframework.ldap.core.support.LdapContextSource.getDirContextInstance(LdapContextSource.java:42) ~[com.mycompany.simpleservice.  SimpleServiceApplication:2.3.4.RELEASE]
+  	at org.springframework.ldap.core.support.AbstractContextSource.createContext(AbstractContextSource.java:350) ~[na:na]
+  	at org.springframework.ldap.core.support.AbstractContextSource.doGetContext(AbstractContextSource.java:146) ~[na:na]
+  	at org.springframework.ldap.core.support.AbstractContextSource.getContext(AbstractContextSource.java:137) ~[na:na]
+  	at org.springframework.security.ldap.authentication.BindAuthenticator.bindWithDn(BindAuthenticator.java:104) ~[na:na]
+  	at org.springframework.security.ldap.authentication.BindAuthenticator.bindWithDn(BindAuthenticator.java:93) ~[na:na]
+  	at org.springframework.security.ldap.authentication.BindAuthenticator.authenticate(BindAuthenticator.java:74) ~[na:na]
+  	at org.springframework.security.ldap.authentication.LdapAuthenticationProvider.doAuthentication(LdapAuthenticationProvider.java:174) ~[na:na]
+  	at org.springframework.security.ldap.authentication.AbstractLdapAuthenticationProvider.authenticate(AbstractLdapAuthenticationProvider.java:81) ~[na:na]
+  	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:182) ~[na:na]
+  	at org.springframework.security.authentication.ProviderManager.authenticate(ProviderManager.java:201) ~[na:na]
+  	at org.springframework.security.web.authentication.www.BasicAuthenticationFilter.doFilterInternal(BasicAuthenticationFilter.java:155) ~[na:na]
+  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[na:na]
+  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[na:na]
+  	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:103) ~[na:na]
+  	at org.springframework.security.web.authentication.logout.LogoutFilter.doFilter(LogoutFilter.java:89) ~[na:na]
+  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[na:na]
+  	at org.springframework.web.filter.CorsFilter.doFilterInternal(CorsFilter.java:91) ~[na:na]
+  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[na:na]
+  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[na:na]
+  	at org.springframework.security.web.header.HeaderWriterFilter.doHeadersAfter(HeaderWriterFilter.java:90) ~[na:na]
+  	at org.springframework.security.web.header.HeaderWriterFilter.doFilterInternal(HeaderWriterFilter.java:75) ~[na:na]
+  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[na:na]
+  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[na:na]
+  	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:110) ~[na:na]
+  	at org.springframework.security.web.context.SecurityContextPersistenceFilter.doFilter(SecurityContextPersistenceFilter.java:80) ~[na:na]
+  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[na:na]
+  	at org.springframework.security.web.context.request.async.WebAsyncManagerIntegrationFilter.doFilterInternal(WebAsyncManagerIntegrationFilter.java:55) ~[na:na]
+  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[na:na]
+  	at org.springframework.security.web.FilterChainProxy$VirtualFilterChain.doFilter(FilterChainProxy.java:336) ~[na:na]
+  	at org.springframework.security.web.FilterChainProxy.doFilterInternal(FilterChainProxy.java:211) ~[na:na]
+  	at org.springframework.security.web.FilterChainProxy.doFilter(FilterChainProxy.java:183) ~[na:na]
+  	at org.springframework.web.filter.DelegatingFilterProxy.invokeDelegate(DelegatingFilterProxy.java:358) ~[na:na]
+  	at org.springframework.web.filter.DelegatingFilterProxy.doFilter(DelegatingFilterProxy.java:271) ~[na:na]
+  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:190) ~[na:na]
+  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:163) ~[na:na]
+  	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.  3.9]
+  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[na:na]
+  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:190) ~[na:na]
+  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:163) ~[na:na]
+  	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[com.mycompany.simpleservice.SimpleServiceApplication:5.3.9]
+  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[na:na]
+  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:190) ~[na:na]
+  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:163) ~[na:na]
+  	at org.springframework.boot.actuate.metrics.web.servlet.WebMvcMetricsFilter.doFilterInternal(WebMvcMetricsFilter.java:96) ~[na:na]
+  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[na:na]
+  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:190) ~[na:na]
+  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:163) ~[na:na]
+  	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:201) ~[com.mycompany.simpleservice.  SimpleServiceApplication:5.3.9]
+  	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:119) ~[na:na]
+  	at org.apache.catalina.core.ApplicationFilterChain.internalDoFilter(ApplicationFilterChain.java:190) ~[na:na]
+  	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:163) ~[na:na]
+  	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:202) ~[na:na]
+  	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:97) ~[na:na]
+  	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:542) ~[na:na]
+  	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:143) ~[na:na]
+  	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:92) ~[com.mycompany.simpleservice.SimpleServiceApplication:9.0.50]
+  	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:78) ~[na:na]
+  	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:357) ~[na:na]
+  	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:382) ~[na:na]
+  	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:65) ~[na:na]
+  	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:893) ~[na:na]
+  	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1723) ~[na:na]
+  	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:49) ~[na:na]
+  	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1128) ~[na:na]
+  	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:628) ~[na:na]
+  	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:61) ~[na:na]
+  	at java.lang.Thread.run(Thread.java:829) ~[na:na]
+  	at com.oracle.svm.core.thread.JavaThreads.threadStartRoutine(JavaThreads.java:567) ~[na:na]
+  	at com.oracle.svm.core.posix.thread.PosixJavaThreads.pthreadStartRoutine(PosixJavaThreads.java:192) ~[na:na]
   ```
