@@ -1,4 +1,4 @@
-package com.mycompany.simpleservice.controller;
+package com.mycompany.simpleservice.rest;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -27,5 +27,4 @@ public class SimpleServiceController {
     public String getPrivateString(Principal principal) {
         return principal.getName() + ", it is private.\n";
     }
-
 }
