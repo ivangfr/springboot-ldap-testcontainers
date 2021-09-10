@@ -1,6 +1,6 @@
-# springboot-ldap
+# springboot-ldap-testcontainers
 
-The goal of this project is to create a simple [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) REST API, called `simple-service`, and secure it with `Spring Security LDAP` module.
+The goal of this project is to create a simple [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) REST API, called `simple-service`, and secure it with `Spring Security LDAP` module. We will use [`Testcontainers`](https://www.testcontainers.org/) for integration testing. 
 
 ## Application
 
@@ -18,19 +18,14 @@ The goal of this project is to create a simple [`Spring Boot`](https://docs.spri
 
 ## Start Environment
 
-- Open a terminal and inside `springboot-ldap` root folder run
-  ```
-  docker-compose up -d
-  ```
-
-- Check their status by running
-  ```
-  docker-compose ps
-  ```
+Open a terminal and inside `springboot-ldap-testcontainers` root folder run
+```
+docker-compose up -d
+```
 
 ## Import OpenLDAP Users
 
-The `LDIF` file we will use, `springboot-ldap/ldap/ldap-mycompany-com.ldif`, contains a pre-defined structure for `mycompany.com`. Basically, it has 2 groups (`employees` and `clients`) and 3 users (`Bill Gates`, `Steve Jobs` and `Mark Cuban`). Besides, it's defined that `Bill Gates` and `Steve Jobs` belong to `employees` group and `Mark Cuban` belongs to `clients` group.
+The `LDIF` file we will use, `simple-service/src/main/resources/ldap-mycompany-com.ldif`, contains a pre-defined structure for `mycompany.com`. Basically, it has 2 groups (`employees` and `clients`) and 3 users (`Bill Gates`, `Steve Jobs` and `Mark Cuban`). Besides, it's defined that `Bill Gates` and `Steve Jobs` belong to `employees` group and `Mark Cuban` belongs to `clients` group.
 ```
 Bill Gates > username: bgates, password: 123
 Steve Jobs > username: sjobs, password: 123
@@ -41,7 +36,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ### Import users running a script
 
-- In a terminal, make use you are in `springboot-ldap` root folder
+- In a terminal, make use you are in `springboot-ldap-testcontainers` root folder
 
 - Run the following script
   ```
@@ -66,7 +61,7 @@ There are two ways to import those users: by running a script; or by using `phpl
   Password: admin
   ```
 
-- Import the file `springboot-ldap/ldap/ldap-mycompany-com.ldif`
+- Import the file `simple-service/src/main/resources/ldap-mycompany-com.ldif`
 
 - You should see something like
 
@@ -74,7 +69,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ## Run application with Maven
 
-- In a terminal, make use you are in `springboot-ldap` root folder
+- In a terminal, make use you are in `springboot-ldap-testcontainers` root folder
 
 - Run the following command to start `simple-service`
   ```
@@ -83,7 +78,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ## Run application as Docker container
 
-- In a terminal, make sure you are in `springboot-ldap` root folder
+- In a terminal, make sure you are in `springboot-ldap-testcontainers` root folder
 
 - Build Docker Image
   - JVM
@@ -107,7 +102,7 @@ There are two ways to import those users: by running a script; or by using `phpl
   ```
   docker run --rm --name simple-service -p 8080:8080 \
     -e LDAP_HOST=openldap \
-    --network springboot-ldap_default \
+    --network springboot-ldap-testcontainers_default \
     ivanfranchin/simple-service:1.0.0
   ```
 
@@ -197,18 +192,27 @@ There are two ways to import those users: by running a script; or by using `phpl
 ## Shutdown
 
 - To stop `simple-service` application, go to the terminal where it is running and press `Ctrl+C`
-- To stop and remove docker-compose containers, network and volumes, in a terminal and inside `springboot-ldap` root folder, run the following command
+- To stop and remove docker-compose containers, network and volumes, in a terminal and inside `springboot-ldap-testcontainers` root folder, run the following command
   ```
   docker-compose down -v
   ```
 
 ## Running Test Cases
 
-- In a terminal, make sure you are inside `springboot-ldap` root folder
+- In a terminal, make sure you are inside `springboot-ldap-testcontainers` root folder
 
-- Run the following command to start the unit tests
+- Run the command below to start the **Unit Tests**
   ```
   ./mvnw clean test --projects simple-service
+  ```
+
+- Run the command below to start the **Unit** and **Integration Tests**
+  > **Note 1:** `Testcontainers` will start automatically `OpenLDAP` Docker container before some tests begin and will shut it down when the tests finish.
+ 
+  > **Note 2:** [`TESTCONTAINERS_CHECKS_DISABLE`](https://www.testcontainers.org/features/configuration/#disabling-the-startup-checks) is set to `true` because the startup check is getting stuck on subsequent runs after the first one that runs fine. It leaves behind `alpine` Docker containers with status `Created`. In order to solve it in Mac, we need to restart `Docker Desktop`.
+
+  ```
+  TESTCONTAINERS_CHECKS_DISABLE=true && ./mvnw clean verify --projects simple-service
   ```
 
 ## Cleanup
@@ -217,21 +221,6 @@ To remove the Docker image created by this project, go to a terminal and run the
 ```
 docker rmi ivanfranchin/simple-service:1.0.0
 ```
-
-## Using Tracing Agent to generate the missing configuration for native image
-
-> **IMPORTANT**: The environment variable `JAVA_HOME` must be set to a `GraalVM` installation directory ([Install GraalVM](https://www.graalvm.org/docs/getting-started/#install-graalvm)), and the `native-image` tool must be installed ([Install Native Image](https://www.graalvm.org/reference-manual/native-image/#install-native-image)).
-
-> **TIP**: For more information `Tracing Agent` see [Spring Native documentation](https://docs.spring.io/spring-native/docs/current/reference/htmlsingle/#tracing-agent)
-
-- Run the following steps in a terminal and inside `springboot-keycloak-openldap` root folder
-  ```
-  ./mvnw clean package --projects simple-service
-  cd simple-service
-  java -jar -agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image target/simple-service-1.0.0.jar
-  ```
-- Once the application is running, exercise it by calling its endpoints using `curl` and `Swagger` so that `Tracing Agent` observes the behavior of the application running on Java HotSpot VM and writes configuration files for reflection, JNI, resource, and proxy usage to automatically configure the native image generator.
-- It should generate `JSON` files in `simple-service/src/main/resources/META-INF/native-image` such as: `jni-config.json`, `proxy-config.json`, `reflect-config.json`, `resource-config.json` and `serialization-config.json`.
 
 ## Issues
 

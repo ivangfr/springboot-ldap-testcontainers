@@ -10,16 +10,17 @@
     </parent>
 
     <groupId>com.mycompany</groupId>
-    <artifactId>springboot-ldap</artifactId>
+    <artifactId>springboot-ldap-testcontainers</artifactId>
     <version>1.0.0</version>
     <packaging>pom</packaging>
-    <name>springboot-ldap</name>
+    <name>springboot-ldap-testcontainers</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>11</java.version>
         <repackage.classifier/>
         <spring-native.version>0.10.3</spring-native.version>
+        <testcontainers.version>1.16.0</testcontainers.version>
         <jib-maven-plugin.version>3.1.4</jib-maven-plugin.version>
         <docker-image.prefix>ivanfranchin</docker-image.prefix>
     </properties>
@@ -34,7 +35,24 @@
             <artifactId>spring-native</artifactId>
             <version>${spring-native.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
 
     <build>
         <plugins>
@@ -83,6 +101,24 @@
                         <image>${docker-image.prefix}/${project.artifactId}:${project.version}</image>
                     </to>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>integration-test</id>
+                        <goals>
+                            <goal>integration-test</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>verify</id>
+                        <goals>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
