@@ -9,7 +9,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 import java.io.IOException;
 
 @Testcontainers
-public class AbstractTestcontainers {
+public abstract class AbstractTestcontainers {
 
     private static final GenericContainer<?> openldapContainer = new GenericContainer<>("osixia/openldap:1.5.0");
 
