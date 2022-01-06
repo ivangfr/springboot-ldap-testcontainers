@@ -93,7 +93,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 - Environment Variables
 
   | Environment Variable | Description                                             |
-  | -------------------- | ------------------------------------------------------- |
+  |----------------------|---------------------------------------------------------|
   | `LDAP_HOST`          | Specify host of the `LDAP` to use (default `localhost`) |
   | `LDAP_PORT`          | Specify port of the `LDAP` to use (default `389`)       |
 
@@ -207,12 +207,10 @@ There are two ways to import those users: by running a script; or by using `phpl
   ```
 
 - Run the command below to start the **Unit** and **Integration Tests**
-  > **Note 1:** `Testcontainers` will start automatically `OpenLDAP` Docker container before some tests begin and will shut it down when the tests finish.
- 
-  > **Note 2:** [`TESTCONTAINERS_CHECKS_DISABLE`](https://www.testcontainers.org/features/configuration/#disabling-the-startup-checks) is set to `true` because the startup check is getting stuck on subsequent runs after the first one that runs fine. It leaves behind `alpine` Docker containers with status `Created`. In order to solve it in Mac, we need to restart `Docker Desktop`.
+  > **Note:** `Testcontainers` will start automatically `OpenLDAP` Docker container before some tests begin and will shut it down when the tests finish.
 
   ```
-  TESTCONTAINERS_CHECKS_DISABLE=true && ./mvnw clean verify --projects simple-service
+  ./mvnw clean verify --projects simple-service
   ```
 
 ## Cleanup
