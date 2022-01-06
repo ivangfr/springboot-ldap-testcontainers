@@ -19,6 +19,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(SimpleServiceController.class)
 class SimpleServiceControllerTest {
 
+    private static final String API_PUBLIC = "/api/public";
+    private static final String API_PRIVATE = "/api/private";
+
+    private static final MediaType MEDIA_TYPE_TEXT_PLAIN_UTF8 = MediaType.valueOf("text/plain;charset=UTF-8");
+
     @Autowired
     private MockMvc mockMvc;
 
@@ -50,9 +55,4 @@ class SimpleServiceControllerTest {
                 .andExpect(content().contentType(MEDIA_TYPE_TEXT_PLAIN_UTF8))
                 .andExpect(content().string("ivan, it is private.\n"));
     }
-
-    private static final String API_PUBLIC = "/api/public";
-    private static final String API_PRIVATE = "/api/private";
-
-    private static final MediaType MEDIA_TYPE_TEXT_PLAIN_UTF8 = MediaType.valueOf("text/plain;charset=UTF-8");
 }

@@ -215,9 +215,9 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ## Cleanup
 
-To remove the Docker image created by this project, go to a terminal and run the following command
+To remove the Docker image created by this project, go to a terminal and, inside `springboot-ldap-testcontainers` root folder, run the following script
 ```
-docker rmi ivanfranchin/simple-service:1.0.0
+./remove-docker-images.sh
 ```
 
 ## Issues

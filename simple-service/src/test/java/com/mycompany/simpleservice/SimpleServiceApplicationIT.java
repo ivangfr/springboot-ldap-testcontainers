@@ -1,5 +1,6 @@
 package com.mycompany.simpleservice;
 
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -10,21 +11,57 @@ import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.DynamicPropertyRegistry;
+import org.springframework.test.context.DynamicPropertySource;
+import org.testcontainers.containers.BindMode;
+import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
+import java.io.IOException;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Testcontainers
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
-class SimpleServiceApplicationIT extends AbstractTestcontainers {
+class SimpleServiceApplicationIT {
+
+    private static final String API_PUBLIC = "/api/public";
+    private static final String API_PRIVATE = "/api/private";
+
+    private static final String BGATES_VALID_USERNAME = "bgates";
+    private static final String BGATES_VALID_PASSWORD = "123";
+
+    private static final int OPENLDAP_EXPOSED_PORT = 389;
 
     @Autowired
     private TestRestTemplate testRestTemplate;
 
+    @Container
+    private static final GenericContainer<?> openldapContainer = new GenericContainer<>("osixia/openldap:1.5.0")
+            .withNetworkAliases("openldap")
+            .withEnv("LDAP_ORGANISATION", "MyCompany Inc.")
+            .withEnv("LDAP_DOMAIN", "mycompany.com")
+            .withExposedPorts(OPENLDAP_EXPOSED_PORT)
+            .withFileSystemBind(
+                    System.getProperty("user.dir") + "/src/main/resources/ldap-mycompany-com.ldif",
+                    "/ldap/ldap-mycompany-com.ldif",
+                    BindMode.READ_ONLY);
+
+    @DynamicPropertySource
+    static void dynamicProperties(DynamicPropertyRegistry registry) {
+        String openldapUrl = String.format("ldap://localhost:%s", openldapContainer.getMappedPort(OPENLDAP_EXPOSED_PORT));
+        registry.add("spring.ldap.urls", () -> openldapUrl);
+    }
+
+    @BeforeAll
+    static void beforeAll() throws IOException, InterruptedException {
+        openldapContainer.execInContainer("ldapadd", "-x", "-D", "cn=admin,dc=mycompany,dc=com", "-w", "admin", "-H", "ldap://", "-f", "ldap/ldap-mycompany-com.ldif");
+    }
+
     @Test
     void testGetPublicString() {
-        System.out.println(System.getProperties());
-
         ResponseEntity<String> responseEntity = testRestTemplate.getForEntity(API_PUBLIC, String.class);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
@@ -68,10 +105,4 @@ class SimpleServiceApplicationIT extends AbstractTestcontainers {
                 Arguments.of("invalid_username", BGATES_VALID_PASSWORD)
         );
     }
-
-    private static final String API_PUBLIC = "/api/public";
-    private static final String API_PRIVATE = "/api/private";
-
-    private static final String BGATES_VALID_USERNAME = "bgates";
-    private static final String BGATES_VALID_PASSWORD = "123";
 }
