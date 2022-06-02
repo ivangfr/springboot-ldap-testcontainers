@@ -1,30 +1,21 @@
 package com.mycompany.simpleservice.security;
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.autoconfigure.ldap.LdapProperties;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.ldap.core.support.BaseLdapPathContextSource;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.config.ldap.LdapBindAuthenticationManagerFactory;
+import org.springframework.security.ldap.userdetails.PersonContextMapper;
+import org.springframework.security.web.SecurityFilterChain;
 
 @EnableWebSecurity
-@EnableConfigurationProperties(LdapProperties.class)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
-    @Value("${ldap.userDnPattern}")
-    private String userDnPattern;
-
-    private final LdapProperties ldapProperties;
-
-    public WebSecurityConfig(LdapProperties ldapProperties) {
-        this.ldapProperties = ldapProperties;
-    }
-
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/private").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/public").permitAll()
@@ -35,18 +26,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .httpBasic();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.cors().and().csrf().disable();
+        return http.build();
     }
 
-    @Override
-    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-        String url = String.format("%s/%s", ldapProperties.getUrls()[0], ldapProperties.getBase());
-
-        auth.ldapAuthentication()
-                .contextSource()
-                .url(url)
-                .managerDn(ldapProperties.getUsername())
-                .managerPassword(ldapProperties.getPassword())
-                .and()
-                .userDnPatterns(userDnPattern);
+    @Bean
+    AuthenticationManager ldapAuthenticationManager(BaseLdapPathContextSource contextSource) {
+        LdapBindAuthenticationManagerFactory factory = new LdapBindAuthenticationManagerFactory(contextSource);
+        factory.setUserDnPatterns(USER_DN_PATTERN);
+        factory.setUserDetailsContextMapper(new PersonContextMapper());
+        return factory.createAuthenticationManager();
     }
+
+    private static final String USER_DN_PATTERN = "uid={0}";
 }

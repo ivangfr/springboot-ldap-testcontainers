@@ -121,18 +121,17 @@ There are two ways to import those users: by running a script; or by using `phpl
    ```
 
 1. Try to call the endpoint `/api/private` without credentials
-   ``` 
+   ```
    curl -i localhost:8080/api/private
    ```
    
    It should return
    ```
    HTTP/1.1 401
-   { "timestamp": "...", "status": 401, "error": "Unauthorized", "message": "Unauthorized", "path": "/api/private" }
    ```
 
 1. Call the endpoint `/api/private` again. This time informing `username` and `password`
-   ``` 
+   ```
    curl -i -u bgates:123 localhost:8080/api/private
    ```
    
@@ -143,7 +142,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    ```
 
 1. Call the endpoint `/api/private` informing an invalid password
-   ``` 
+   ```
    curl -i -u bgates:124 localhost:8080/api/private
    ```
    
@@ -153,7 +152,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    ```
 
 1. Call the endpoint `/api/private` informing a non-existing user
-   ``` 
+   ```
    curl -i -u cslim:123 localhost:8080/api/private
    ```
    
@@ -222,8 +221,7 @@ To remove the Docker image created by this project, go to a terminal and, inside
 
 When using the IDE to run the test cases, it works. When trying to run tests in a terminal, the exception below is thrown. Besides, looks like `spring-native` and `testcontainers` are not working well together. I've removed `spring-native` from the project and running test in the terminal worked! 
 ```
-INFO 71776 --- [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.mycompany.simpleservice.SimpleServiceApplication for test class com.mycompany.simpleservice.rest.SimpleServiceControllerTest
-java.lang.IllegalStateException: Failed to prepare test context using [WebMergedContextConfiguration@1bdbf9be testClass = SimpleServiceApplicationIT, locations = '{}', classes = '{class com.mycompany.simpleservice.SimpleServiceApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true, server.port=0}', contextCustomizers = set[org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@58326051, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@764faa6, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@1a20270e, org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@19e4fcac, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@5a1de7fb, org.springframework.test.context.support.DynamicPropertiesContextCustomizer@a38b929f, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@54504ecd], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]]
+java.lang.IllegalStateException: Failed to prepare test context using [WebMergedContextConfiguration@430fa4ef testClass = SimpleServiceApplicationIT, locations = '{}', classes = '{class com.mycompany.simpleservice.SimpleServiceApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true, server.port=0}', contextCustomizers = set[org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@764faa6, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@4f5991f6, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@19e4fcac, org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@21fd5faa, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@6eb2384f, org.springframework.test.context.support.DynamicPropertiesContextCustomizer@a38b929f, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@54504ecd], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]]
 	at org.springframework.aot.test.boot.SpringBootAotTestContextProcessor.prepareTestContext(SpringBootAotTestContextProcessor.java:63)
 	at org.springframework.aot.test.context.bootstrap.generator.TestContextConfigurationDescriptor.parseTestContext(TestContextConfigurationDescriptor.java:60)
 	at org.springframework.aot.test.context.bootstrap.generator.TestContextAotProcessor.generateTestContext(TestContextAotProcessor.java:109)
@@ -243,7 +241,7 @@ java.lang.IllegalStateException: Failed to prepare test context using [WebMerged
 	at org.springframework.aot.test.build.GenerateTestBootstrapCommand.main(GenerateTestBootstrapCommand.java:116)
 Caused by: java.lang.IllegalStateException: Mapped port can only be obtained after the container is started
 	at org.testcontainers.shaded.com.google.common.base.Preconditions.checkState(Preconditions.java:174)
-	at org.testcontainers.containers.ContainerState.getMappedPort(ContainerState.java:142)
+	at org.testcontainers.containers.ContainerState.getMappedPort(ContainerState.java:148)
 	at com.mycompany.simpleservice.SimpleServiceApplicationIT.dynamicProperties(SimpleServiceApplicationIT.java:54)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
@@ -254,18 +252,18 @@ Caused by: java.lang.IllegalStateException: Mapped port can only be obtained aft
 	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
 	at org.springframework.test.context.support.DynamicPropertiesContextCustomizer.buildDynamicPropertiesMap(DynamicPropertiesContextCustomizer.java:82)
 	at org.springframework.test.context.support.DynamicPropertiesContextCustomizer.customizeContext(DynamicPropertiesContextCustomizer.java:72)
-	at org.springframework.boot.test.context.SpringBootContextLoader$ContextCustomizerAdapter.initialize(SpringBootContextLoader.java:350)
-	at org.springframework.boot.SpringApplication.applyInitializers(SpringApplication.java:613)
+	at org.springframework.boot.test.context.SpringBootContextLoader$ContextCustomizerAdapter.initialize(SpringBootContextLoader.java:326)
+	at org.springframework.boot.SpringApplication.applyInitializers(SpringApplication.java:607)
 	at org.springframework.aot.test.boot.BuildTimeTestSpringApplication.prepareContext(BuildTimeTestSpringApplication.java:87)
 	at org.springframework.aot.test.boot.BuildTimeTestSpringApplication.run(BuildTimeTestSpringApplication.java:80)
 	at org.springframework.aot.test.boot.BuildTimeTestSpringApplication.run(BuildTimeTestSpringApplication.java:49)
-	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:144)
+	at org.springframework.boot.test.context.SpringBootContextLoader.loadContext(SpringBootContextLoader.java:132)
 	at org.springframework.aot.test.boot.SpringBootBuildTimeConfigContextLoader.loadContext(SpringBootBuildTimeConfigContextLoader.java:34)
 	at org.springframework.aot.test.boot.SpringBootAotTestContextProcessor.prepareTestContext(SpringBootAotTestContextProcessor.java:60)
 	... 16 more
 [ERROR]
 org.apache.maven.plugin.MojoExecutionException: Could not exec java
-    at org.springframework.aot.maven.AbstractBootstrapMojo.forkJvm (AbstractBootstrapMojo.java:187)
+    at org.springframework.aot.maven.AbstractBootstrapMojo.forkJvm (AbstractBootstrapMojo.java:197)
     at org.springframework.aot.maven.TestGenerateMojo.execute (TestGenerateMojo.java:151)
     at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo (DefaultBuildPluginManager.java:137)
     at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:210)
@@ -297,7 +295,7 @@ org.apache.maven.plugin.MojoExecutionException: Could not exec java
     at org.apache.maven.wrapper.WrapperExecutor.execute (WrapperExecutor.java:156)
     at org.apache.maven.wrapper.MavenWrapperMain.main (MavenWrapperMain.java:72)
 Caused by: org.apache.maven.plugin.MojoExecutionException: Bootstrap code generator finished with exit code: 1
-    at org.springframework.aot.maven.AbstractBootstrapMojo.forkJvm (AbstractBootstrapMojo.java:184)
+    at org.springframework.aot.maven.AbstractBootstrapMojo.forkJvm (AbstractBootstrapMojo.java:190)
     at org.springframework.aot.maven.TestGenerateMojo.execute (TestGenerateMojo.java:151)
     at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo (DefaultBuildPluginManager.java:137)
     at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:210)
