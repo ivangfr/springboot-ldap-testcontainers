@@ -65,7 +65,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 - You should see something like
 
-  ![phpldapadmin](documentation/phpldapadmin.png)
+  ![phpldapadmin](documentation/phpldapadmin.jpeg)
 
 ## Run application with Maven
 
@@ -163,9 +163,9 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ## Testing using Swagger
 
-1. Access http://localhost:8080/swagger-ui.html
+1. Access http://localhost:8080/swagger-ui/index.html
 
-   ![swagger](documentation/simple-service-swagger.png)
+   ![swagger](documentation/simple-service-swagger.jpeg)
 
 1. Click `GET /api/public` to open it; then, click `Try it out` button and, finally, `Execute` button.
 
@@ -221,7 +221,7 @@ To remove the Docker image created by this project, go to a terminal and, inside
 
 When using the IDE to run the test cases, it works. When trying to run tests in a terminal, the exception below is thrown. Besides, looks like `spring-native` and `testcontainers` are not working well together. I've removed `spring-native` from the project and running test in the terminal worked! 
 ```
-java.lang.IllegalStateException: Failed to prepare test context using [WebMergedContextConfiguration@430fa4ef testClass = SimpleServiceApplicationIT, locations = '{}', classes = '{class com.mycompany.simpleservice.SimpleServiceApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true, server.port=0}', contextCustomizers = set[org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@764faa6, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@4f5991f6, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@19e4fcac, org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@21fd5faa, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@6eb2384f, org.springframework.test.context.support.DynamicPropertiesContextCustomizer@a38b929f, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@54504ecd], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]]
+java.lang.IllegalStateException: Failed to prepare test context using [WebMergedContextConfiguration@19f21b6b testClass = SimpleServiceApplicationIT, locations = '{}', classes = '{class com.mycompany.simpleservice.SimpleServiceApplication}', contextInitializerClasses = '[]', activeProfiles = '{}', propertySourceLocations = '{}', propertySourceProperties = '{org.springframework.boot.test.context.SpringBootTestContextBootstrapper=true, server.port=0}', contextCustomizers = set[org.springframework.boot.test.context.filter.ExcludeFilterContextCustomizer@598bd2ba, org.springframework.boot.test.json.DuplicateJsonObjectContextCustomizerFactory$DuplicateJsonObjectContextCustomizer@38234a38, org.springframework.boot.test.mock.mockito.MockitoContextCustomizer@0, org.springframework.boot.test.web.client.TestRestTemplateContextCustomizer@4b79ac84, org.springframework.boot.test.autoconfigure.actuate.metrics.MetricsExportContextCustomizerFactory$DisableMetricExportContextCustomizer@5460cf3a, org.springframework.boot.test.autoconfigure.properties.PropertyMappingContextCustomizer@0, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverContextCustomizerFactory$Customizer@3a4621bd, org.springframework.test.context.support.DynamicPropertiesContextCustomizer@a38b929f, org.springframework.boot.test.context.SpringBootTestArgs@1, org.springframework.boot.test.context.SpringBootTestWebEnvironment@1339e7aa], resourceBasePath = 'src/main/webapp', contextLoader = 'org.springframework.boot.test.context.SpringBootContextLoader', parent = [null]]
 	at org.springframework.aot.test.boot.SpringBootAotTestContextProcessor.prepareTestContext(SpringBootAotTestContextProcessor.java:63)
 	at org.springframework.aot.test.context.bootstrap.generator.TestContextConfigurationDescriptor.parseTestContext(TestContextConfigurationDescriptor.java:60)
 	at org.springframework.aot.test.context.bootstrap.generator.TestContextAotProcessor.generateTestContext(TestContextAotProcessor.java:109)
@@ -241,7 +241,7 @@ java.lang.IllegalStateException: Failed to prepare test context using [WebMerged
 	at org.springframework.aot.test.build.GenerateTestBootstrapCommand.main(GenerateTestBootstrapCommand.java:116)
 Caused by: java.lang.IllegalStateException: Mapped port can only be obtained after the container is started
 	at org.testcontainers.shaded.com.google.common.base.Preconditions.checkState(Preconditions.java:174)
-	at org.testcontainers.containers.ContainerState.getMappedPort(ContainerState.java:148)
+	at org.testcontainers.containers.ContainerState.getMappedPort(ContainerState.java:149)
 	at com.mycompany.simpleservice.SimpleServiceApplicationIT.dynamicProperties(SimpleServiceApplicationIT.java:54)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
@@ -266,17 +266,18 @@ org.apache.maven.plugin.MojoExecutionException: Could not exec java
     at org.springframework.aot.maven.AbstractBootstrapMojo.forkJvm (AbstractBootstrapMojo.java:197)
     at org.springframework.aot.maven.TestGenerateMojo.execute (TestGenerateMojo.java:151)
     at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo (DefaultBuildPluginManager.java:137)
-    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:210)
-    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:156)
-    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:148)
-    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:117)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute (MojoExecutor.java:301)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:211)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:165)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:157)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:121)
     at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:81)
     at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build (SingleThreadedBuilder.java:56)
-    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:128)
-    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:305)
+    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:127)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:294)
     at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:192)
     at org.apache.maven.DefaultMaven.execute (DefaultMaven.java:105)
-    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:972)
+    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:960)
     at org.apache.maven.cli.MavenCli.doMain (MavenCli.java:293)
     at org.apache.maven.cli.MavenCli.main (MavenCli.java:196)
     at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0 (Native Method)
@@ -298,17 +299,18 @@ Caused by: org.apache.maven.plugin.MojoExecutionException: Bootstrap code genera
     at org.springframework.aot.maven.AbstractBootstrapMojo.forkJvm (AbstractBootstrapMojo.java:190)
     at org.springframework.aot.maven.TestGenerateMojo.execute (TestGenerateMojo.java:151)
     at org.apache.maven.plugin.DefaultBuildPluginManager.executeMojo (DefaultBuildPluginManager.java:137)
-    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:210)
-    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:156)
-    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:148)
-    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:117)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.doExecute (MojoExecutor.java:301)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:211)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:165)
+    at org.apache.maven.lifecycle.internal.MojoExecutor.execute (MojoExecutor.java:157)
+    at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:121)
     at org.apache.maven.lifecycle.internal.LifecycleModuleBuilder.buildProject (LifecycleModuleBuilder.java:81)
     at org.apache.maven.lifecycle.internal.builder.singlethreaded.SingleThreadedBuilder.build (SingleThreadedBuilder.java:56)
-    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:128)
-    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:305)
+    at org.apache.maven.lifecycle.internal.LifecycleStarter.execute (LifecycleStarter.java:127)
+    at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:294)
     at org.apache.maven.DefaultMaven.doExecute (DefaultMaven.java:192)
     at org.apache.maven.DefaultMaven.execute (DefaultMaven.java:105)
-    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:972)
+    at org.apache.maven.cli.MavenCli.execute (MavenCli.java:960)
     at org.apache.maven.cli.MavenCli.doMain (MavenCli.java:293)
     at org.apache.maven.cli.MavenCli.main (MavenCli.java:196)
     at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0 (Native Method)

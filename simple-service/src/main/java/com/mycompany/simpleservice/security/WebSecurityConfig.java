@@ -15,7 +15,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/api/private").authenticated()
                 .antMatchers(HttpMethod.GET, "/api/public").permitAll()
@@ -30,7 +30,7 @@ public class WebSecurityConfig {
     }
 
     @Bean
-    AuthenticationManager ldapAuthenticationManager(BaseLdapPathContextSource contextSource) {
+    public AuthenticationManager ldapAuthenticationManager(BaseLdapPathContextSource contextSource) {
         LdapBindAuthenticationManagerFactory factory = new LdapBindAuthenticationManagerFactory(contextSource);
         factory.setUserDnPatterns(USER_DN_PATTERN);
         factory.setUserDetailsContextMapper(new PersonContextMapper());

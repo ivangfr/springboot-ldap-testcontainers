@@ -34,7 +34,7 @@ class SimpleServiceControllerTest {
 
         resultActions.andExpect(status().isOk())
                 .andExpect(content().contentType(MEDIA_TYPE_TEXT_PLAIN_UTF8))
-                .andExpect(content().string("It is public.\n"));
+                .andExpect(content().string("It is public."));
     }
 
     @Test
@@ -53,6 +53,6 @@ class SimpleServiceControllerTest {
 
         resultActions.andExpect(status().isOk())
                 .andExpect(content().contentType(MEDIA_TYPE_TEXT_PLAIN_UTF8))
-                .andExpect(content().string("ivan, it is private.\n"));
+                .andExpect(content().string("ivan, it is private."));
     }
 }

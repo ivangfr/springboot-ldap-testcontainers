@@ -17,7 +17,7 @@ public class SimpleServiceController {
     @Operation(summary = "Get string from public endpoint")
     @GetMapping("/public")
     public String getPublicString() {
-        return "It is public.\n";
+        return "It is public.";
     }
 
     @Operation(
@@ -25,6 +25,6 @@ public class SimpleServiceController {
             security = {@SecurityRequirement(name = BASIC_AUTH_SECURITY_SCHEME)})
     @GetMapping("/private")
     public String getPrivateString(Principal principal) {
-        return principal.getName() + ", it is private.\n";
+        return principal.getName() + ", it is private.";
     }
 }

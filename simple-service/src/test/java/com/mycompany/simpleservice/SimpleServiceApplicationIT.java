@@ -66,7 +66,7 @@ class SimpleServiceApplicationIT {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isNotNull();
-        assertThat(responseEntity.getBody()).isEqualTo("It is public.\n");
+        assertThat(responseEntity.getBody()).isEqualTo("It is public.");
     }
 
     @Test
@@ -84,7 +84,7 @@ class SimpleServiceApplicationIT {
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isNotNull();
-        assertThat(responseEntity.getBody()).isEqualTo("bgates, it is private.\n");
+        assertThat(responseEntity.getBody()).isEqualTo("bgates, it is private.");
     }
 
     @ParameterizedTest
