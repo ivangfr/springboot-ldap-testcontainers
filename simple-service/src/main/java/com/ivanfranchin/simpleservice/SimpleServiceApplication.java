@@ -1,4 +1,4 @@
-package com.mycompany.simpleservice;
+package com.ivanfranchin.simpleservice;
 
 import org.springframework.aop.SpringProxy;
 import org.springframework.aop.framework.Advised;

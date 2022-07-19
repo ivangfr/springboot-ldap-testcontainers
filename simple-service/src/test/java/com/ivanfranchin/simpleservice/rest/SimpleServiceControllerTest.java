@@ -1,4 +1,4 @@
-package com.mycompany.simpleservice.rest;
+package com.ivanfranchin.simpleservice.rest;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

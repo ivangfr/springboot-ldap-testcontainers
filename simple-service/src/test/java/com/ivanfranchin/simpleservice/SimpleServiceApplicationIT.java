@@ -1,4 +1,4 @@
-package com.mycompany.simpleservice;
+package com.ivanfranchin.simpleservice;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

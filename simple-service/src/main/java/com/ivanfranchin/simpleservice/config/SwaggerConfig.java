@@ -1,4 +1,4 @@
-package com.mycompany.simpleservice.config;
+package com.ivanfranchin.simpleservice.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
