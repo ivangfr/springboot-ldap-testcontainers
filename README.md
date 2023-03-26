@@ -2,6 +2,10 @@
 
 The goal of this project is to create a simple [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) REST API, called `simple-service`, and secure it with `Spring Security LDAP` module. We will use [`Testcontainers`](https://www.testcontainers.org/) for integration testing. 
 
+## Project Diagram
+
+![project-diagram](documentation/project-diagram.jpeg)
+
 ## Application
 
 - ### simple-service
