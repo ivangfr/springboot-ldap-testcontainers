@@ -1,6 +1,6 @@
 # springboot-ldap-testcontainers
 
-The goal of this project is to create a simple [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) REST API, called `simple-service`, and secure it with `Spring Security LDAP` module. We will use [`Testcontainers`](https://www.testcontainers.org/) for integration testing. 
+The goal of this project is to create a simple [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) REST API, named `simple-service`, and secure it using the `Spring Security LDAP` module. Additionally, [`Testcontainers`](https://www.testcontainers.org/) will be utilized for integration testing.
 
 ## Proof-of-Concepts & Articles
 
