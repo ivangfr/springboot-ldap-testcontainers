@@ -121,7 +121,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 1. Open a terminal
 
-1. Call the endpoint `/api/public`
+2. Call the endpoint `/api/public`
    ```
    curl -i localhost:8080/api/public
    ```
@@ -132,7 +132,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    It is public.
    ```
 
-1. Try to call the endpoint `/api/private` without credentials
+3. Try to call the endpoint `/api/private` without credentials
    ```
    curl -i localhost:8080/api/private
    ```
@@ -142,7 +142,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    HTTP/1.1 401
    ```
 
-1. Call the endpoint `/api/private` again. This time informing `username` and `password`
+4. Call the endpoint `/api/private` again. This time informing `username` and `password`
    ```
    curl -i -u bgates:123 localhost:8080/api/private
    ```
@@ -153,7 +153,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    bgates, it is private.
    ```
 
-1. Call the endpoint `/api/private` informing an invalid password
+5. Call the endpoint `/api/private` informing an invalid password
    ```
    curl -i -u bgates:124 localhost:8080/api/private
    ```
@@ -163,7 +163,7 @@ There are two ways to import those users: by running a script; or by using `phpl
    HTTP/1.1 401 
    ```
 
-1. Call the endpoint `/api/private` informing a non-existing user
+6. Call the endpoint `/api/private` informing a non-existing user
    ```
    curl -i -u cslim:123 localhost:8080/api/private
    ```
@@ -179,7 +179,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
    ![swagger](documentation/simple-service-swagger.jpeg)
 
-1. Click `GET /api/public` to open it; then, click `Try it out` button and, finally, `Execute` button.
+2. Click `GET /api/public` to open it; then, click `Try it out` button and, finally, `Execute` button.
 
    It should return
    ```
@@ -187,11 +187,11 @@ There are two ways to import those users: by running a script; or by using `phpl
    Response Body: It is public.
    ```
 
-1. Click `Authorize` button (green-white one, located at top-right of the page)
+3. Click `Authorize` button (green-white one, located at top-right of the page)
 
-1. In the form that opens, provide the `Bill Gates` credentials, i.e, username `bgates` and password `123`. Then, click `Authorize` button, and to finalize, click `Close` button
+4. In the form that opens, provide the `Bill Gates` credentials, i.e, username `bgates` and password `123`. Then, click `Authorize` button, and to finalize, click `Close` button
 
-1. Click `GET /api/private` to open it; then click `Try it out` button and, finally, `Execute` button.
+5. Click `GET /api/private` to open it; then click `Try it out` button and, finally, `Execute` button.
 
    It should return
    ```
