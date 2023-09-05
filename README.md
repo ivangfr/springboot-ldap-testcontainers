@@ -27,13 +27,12 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 - [`Java 17+`]( https://www.oracle.com/java/technologies/downloads/#java17)
 - [`Docker`](https://www.docker.com/)
-- [`Docker-Compose`](https://docs.docker.com/compose/install/)
 
 ## Start Environment
 
 Open a terminal and inside `springboot-ldap-testcontainers` root folder run
 ```
-docker-compose up -d
+docker compose up -d
 ```
 
 ## Import OpenLDAP Users
@@ -203,9 +202,9 @@ There are two ways to import those users: by running a script; or by using `phpl
 ## Shutdown
 
 - To stop `simple-service` application, go to the terminal where it is running and press `Ctrl+C`
-- To stop and remove docker-compose containers, network and volumes, in a terminal and inside `springboot-ldap-testcontainers` root folder, run the following command
+- To stop and remove docker compose containers, network and volumes, in a terminal and inside `springboot-ldap-testcontainers` root folder, run the following command
   ```
-  docker-compose down -v
+  docker compose down -v
   ```
 
 ## Running Test Cases
