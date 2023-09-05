@@ -6,6 +6,11 @@ The goal of this project is to create a simple [`Spring Boot`](https://docs.spri
 
 On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-Concepts (PoCs) and articles. You can easily search for the technology you are interested in by using the filter. Who knows, perhaps I have already implemented a PoC or written an article about what you are looking for.
 
+## Additional Readings
+
+- \[**Medium**\] [**Implementing and Securing a Simple Spring Boot REST API with LDAP**](https://medium.com/javarevisited/implementing-and-securing-a-simple-spring-boot-rest-api-with-ldap-7279528ef746)
+- \[**Medium**\] [**Implementing and Securing a Spring Boot GraphQL API with LDAP**](https://medium.com/javarevisited/implementing-and-securing-a-spring-boot-graphql-api-with-ldap-14fe574225e1)
+
 ## Project Diagram
 
 ![project-diagram](documentation/project-diagram.jpeg)
