@@ -1,6 +1,6 @@
 # springboot-ldap-testcontainers
 
-The goal of this project is to create a simple [`Spring Boot`](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) REST API, named `simple-service`, and secure it using the `Spring Security LDAP` module. Additionally, [`Testcontainers`](https://www.testcontainers.org/) will be utilized for integration testing.
+The goal of this project is to create a simple [`Spring Boot`](https://docs.spring.io/spring-boot/index.html) REST API, named `simple-service`, and secure it using the `Spring Security LDAP` module. Additionally, [`Testcontainers`](https://testcontainers.com/) will be utilized for integration testing.
 
 ## Proof-of-Concepts & Articles
 
@@ -8,8 +8,8 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## Additional Readings
 
-- \[**Medium**\] [**Implementing and Securing a Simple Spring Boot REST API with LDAP**](https://medium.com/javarevisited/implementing-and-securing-a-simple-spring-boot-rest-api-with-ldap-7279528ef746)
-- \[**Medium**\] [**Implementing and Securing a Spring Boot GraphQL API with LDAP**](https://medium.com/javarevisited/implementing-and-securing-a-spring-boot-graphql-api-with-ldap-14fe574225e1)
+- \[**Medium**\] [**Implementing and Securing a Simple Spring Boot REST API with LDAP**](https://medium.com/@ivangfr/implementing-and-securing-a-simple-spring-boot-rest-api-with-ldap-7279528ef746)
+- \[**Medium**\] [**Implementing and Securing a Spring Boot GraphQL API with LDAP**](https://medium.com/@ivangfr/implementing-and-securing-a-spring-boot-graphql-api-with-ldap-14fe574225e1)
 
 ## Project Diagram
 
