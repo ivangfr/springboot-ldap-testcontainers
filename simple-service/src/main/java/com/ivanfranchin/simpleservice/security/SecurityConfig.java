@@ -11,15 +11,14 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(
                         authorizeHttpRequests -> authorizeHttpRequests
                                 .requestMatchers(HttpMethod.GET, "/api/private").authenticated()
                                 .requestMatchers(HttpMethod.GET, "/api/public").permitAll()
                                 .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                                 .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/**").permitAll()
-                                .anyRequest().authenticated()
-                )
+                                .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .build();
     }
