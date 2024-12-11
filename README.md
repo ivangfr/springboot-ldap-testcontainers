@@ -30,7 +30,7 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 
 ## Start Environment
 
-Open a terminal and inside `springboot-ldap-testcontainers` root folder run
+Open a terminal and inside the `springboot-ldap-testcontainers` root folder run:
 ```
 docker compose up -d
 ```
@@ -48,7 +48,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ### Import users running a script
 
-- In a terminal, make use you are in `springboot-ldap-testcontainers` root folder
+- In a terminal, make use you are in the `springboot-ldap-testcontainers` root folder
 
 - Run the following script
   ```
@@ -81,7 +81,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ## Run application with Maven
 
-- In a terminal, make use you are in `springboot-ldap-testcontainers` root folder
+- In a terminal, make use you are in the `springboot-ldap-testcontainers` root folder
 
 - Run the following command to start `simple-service`
   ```
@@ -90,7 +90,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ## Run application as Docker container
 
-- In a terminal, make sure you are in `springboot-ldap-testcontainers` root folder
+- In a terminal, make sure you are in the `springboot-ldap-testcontainers` root folder
 
 - Build Docker Image
   - JVM
@@ -202,14 +202,14 @@ There are two ways to import those users: by running a script; or by using `phpl
 ## Shutdown
 
 - To stop `simple-service` application, go to the terminal where it is running and press `Ctrl+C`
-- To stop and remove docker compose containers, network and volumes, in a terminal and inside `springboot-ldap-testcontainers` root folder, run the following command
+- To stop and remove docker compose containers, network and volumes, in a terminal and inside the `springboot-ldap-testcontainers` root folder, run the following command
   ```
   docker compose down -v
   ```
 
 ## Running Test Cases
 
-- In a terminal, make sure you are inside `springboot-ldap-testcontainers` root folder
+- In a terminal, make sure you are inside the `springboot-ldap-testcontainers` root folder
 
 - Run the command below to start the **Unit Tests**
   ```
@@ -224,7 +224,7 @@ There are two ways to import those users: by running a script; or by using `phpl
 
 ## Cleanup
 
-To remove the Docker image created by this project, go to a terminal and, inside `springboot-ldap-testcontainers` root folder, run the following script
+To remove the Docker image created by this project, go to a terminal and, inside the `springboot-ldap-testcontainers` root folder, run the following script
 ```
 ./remove-docker-images.sh
 ```
