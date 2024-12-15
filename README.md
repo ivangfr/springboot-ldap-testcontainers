@@ -44,7 +44,7 @@ Steve Jobs > username: sjobs, password: 123
 Mark Cuban > username: mcuban, password: 123
 ```
 
-There are two ways to import those users: by running a script; or by using `phpldapadmin`
+There are two ways to import those users: by running a script or by using [`phpLDAPadmin`](https://github.com/leenooks/phpLDAPadmin).
 
 ### Import users running a script
 
@@ -63,7 +63,7 @@ There are two ways to import those users: by running a script; or by using `phpl
     -s sub "(uid=*)"
   ```
 
-### Import users using phpldapadmin
+### Import users using phpLDAPadmin
 
 - Access https://localhost:6443
 
@@ -95,11 +95,11 @@ There are two ways to import those users: by running a script; or by using `phpl
 - Build Docker Image
   - JVM
     ```
-    ./docker-build.sh
+    ./build-docker-images.sh
     ```
   - Native
     ```
-    ./docker-build.sh native
+    ./build-docker-images.sh native
     ```
 
 - Environment Variables
