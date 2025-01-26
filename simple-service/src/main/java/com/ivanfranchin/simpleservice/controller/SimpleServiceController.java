@@ -1,4 +1,4 @@
-package com.ivanfranchin.simpleservice.rest;
+package com.ivanfranchin.simpleservice.controller;
 
 import com.ivanfranchin.simpleservice.config.SwaggerConfig;
 import io.swagger.v3.oas.annotations.Operation;
