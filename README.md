@@ -20,8 +20,8 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 - ### simple-service
 
   `Spring Boot` Java Web application that exposes two endpoints:
-   - `GET /api/public`: that can be access by anyone, it is not secured;
-   - `GET /api/private`: that can just be accessed by users authenticated with valid LDAP credentials.
+   - `GET /api/public`: can be accessed by anyone, it is not secured;
+   - `GET /api/private`: can only be accessed by users authenticated with valid LDAP credentials.
 
 ## Prerequisites
 
@@ -37,7 +37,7 @@ docker compose up -d
 
 ## Import OpenLDAP Users
 
-The `LDIF` file we will use, `simple-service/src/main/resources/ldap-mycompany-com.ldif`, contains a pre-defined structure for `mycompany.com`. Basically, it has 2 groups (`employees` and `clients`) and 3 users (`Bill Gates`, `Steve Jobs` and `Mark Cuban`). Besides, it's defined that `Bill Gates` and `Mark Cuban` belong to `employees` group, and `Steve Jobs` belongs to `clients` group.
+The `LDIF` file we will use, `simple-service/src/main/resources/ldap-mycompany-com.ldif`, contains a pre-defined structure for `mycompany.com`. Basically, it has 2 groups (`employees` and `clients`) and 3 users (`Bill Gates`, `Steve Jobs`, and `Mark Cuban`). Besides, it's defined that `Bill Gates` and `Mark Cuban` belong to the `employees` group, and `Steve Jobs` belongs to the `clients` group.
 ```
 Bill Gates > username: bgates, password: 123
 Steve Jobs > username: sjobs, password: 123
@@ -48,7 +48,7 @@ There are two ways to import those users: by running a script or by using [`phpL
 
 ### Import users running a script
 
-- In a terminal, make use you are in the `springboot-ldap-testcontainers` root folder
+- In a terminal, make sure you are in the `springboot-ldap-testcontainers` root folder
 
 - Run the following script
   ```
@@ -81,7 +81,7 @@ There are two ways to import those users: by running a script or by using [`phpL
 
 ## Run application with Maven
 
-- In a terminal, make use you are in the `springboot-ldap-testcontainers` root folder
+- In a terminal, make sure you are in the `springboot-ldap-testcontainers` root folder
 
 - Run the following command to start `simple-service`
   ```
@@ -142,7 +142,7 @@ There are two ways to import those users: by running a script or by using [`phpL
    HTTP/1.1 401
    ```
 
-4. Call the endpoint `/api/private` again. This time informing `username` and `password`
+4. Call the endpoint `/api/private` again. This time providing `username` and `password`
    ```
    curl -i -u bgates:123 localhost:8080/api/private
    ```
@@ -153,7 +153,7 @@ There are two ways to import those users: by running a script or by using [`phpL
    bgates, it is private.
    ```
 
-5. Call the endpoint `/api/private` informing an invalid password
+5. Call the endpoint `/api/private` providing an invalid password
    ```
    curl -i -u bgates:124 localhost:8080/api/private
    ```
@@ -163,7 +163,7 @@ There are two ways to import those users: by running a script or by using [`phpL
    HTTP/1.1 401 
    ```
 
-6. Call the endpoint `/api/private` informing a non-existing user
+6. Call the endpoint `/api/private` providing a non-existing user
    ```
    curl -i -u cslim:123 localhost:8080/api/private
    ```
@@ -187,9 +187,9 @@ There are two ways to import those users: by running a script or by using [`phpL
    Response Body: It is public.
    ```
 
-3. Click `Authorize` button (green-white one, located at top-right of the page)
+3. Click `Authorize` button (green-white one, located at the top-right of the page)
 
-4. In the form that opens, provide the `Bill Gates` credentials, i.e, username `bgates` and password `123`. Then, click `Authorize` button, and to finalize, click `Close` button
+4. In the form that opens, provide the `Bill Gates` credentials, i.e., username `bgates` and password `123`. Then, click `Authorize` button, and to finalize, click `Close` button
 
 5. Click `GET /api/private` to open it; then click `Try it out` button and, finally, `Execute` button.
 
@@ -201,8 +201,8 @@ There are two ways to import those users: by running a script or by using [`phpL
 
 ## Shutdown
 
-- To stop `simple-service` application, go to the terminal where it is running and press `Ctrl+C`
-- To stop and remove docker compose containers, network and volumes, in a terminal and inside the `springboot-ldap-testcontainers` root folder, run the following command
+- To stop the `simple-service` application, go to the terminal where it is running and press `Ctrl+C`
+- To stop and remove docker compose containers, network, and volumes, in a terminal and inside the `springboot-ldap-testcontainers` root folder, run the following command
   ```
   docker compose down -v
   ```
@@ -217,7 +217,7 @@ There are two ways to import those users: by running a script or by using [`phpL
   ```
 
 - Run the command below to start the **Unit** and **Integration Tests**
-  > **Note**: `Testcontainers` will start automatically `OpenLDAP` Docker container before some tests begin and will shut it down when the tests finish.
+  > **Note**: `Testcontainers` will start the `OpenLDAP` Docker container automatically before some tests begin and will shut it down when the tests finish.
   ```
   ./mvnw clean verify --projects simple-service
   ```
