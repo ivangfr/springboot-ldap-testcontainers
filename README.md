@@ -31,14 +31,14 @@ On [ivangfr.github.io](https://ivangfr.github.io), I have compiled my Proof-of-C
 ## Start Environment
 
 Open a terminal and inside the `springboot-ldap-testcontainers` root folder run:
-```
+```bash
 docker compose up -d
 ```
 
 ## Import OpenLDAP Users
 
 The `LDIF` file we will use, `simple-service/src/main/resources/ldap-mycompany-com.ldif`, contains a pre-defined structure for `mycompany.com`. Basically, it has 2 groups (`employees` and `clients`) and 3 users (`Bill Gates`, `Steve Jobs`, and `Mark Cuban`). Besides, it's defined that `Bill Gates` and `Mark Cuban` belong to the `employees` group, and `Steve Jobs` belongs to the `clients` group.
-```
+```text
 Bill Gates > username: bgates, password: 123
 Steve Jobs > username: sjobs, password: 123
 Mark Cuban > username: mcuban, password: 123
@@ -51,12 +51,12 @@ There are two ways to import those users: by running a script or by using [`phpL
 - In a terminal, make sure you are in the `springboot-ldap-testcontainers` root folder
 
 - Run the following script
-  ```
+  ```bash
   ./import-openldap-users.sh
   ```
   
 - Check users imported using [`ldapsearch`](https://linux.die.net/man/1/ldapsearch)
-  ```
+  ```bash
   ldapsearch -x -D "cn=admin,dc=mycompany,dc=com" \
     -w admin -H ldap://localhost:389 \
     -b "ou=users,dc=mycompany,dc=com" \
@@ -68,7 +68,7 @@ There are two ways to import those users: by running a script or by using [`phpL
 - Access https://localhost:6443
 
 - Login with the following credentials
-  ```
+  ```text
   Login DN: cn=admin,dc=mycompany,dc=com
   Password: admin
   ```
@@ -84,7 +84,7 @@ There are two ways to import those users: by running a script or by using [`phpL
 - In a terminal, make sure you are in the `springboot-ldap-testcontainers` root folder
 
 - Run the following command to start `simple-service`
-  ```
+  ```bash
   ./mvnw clean spring-boot:run --projects simple-service
   ```
 
@@ -94,11 +94,11 @@ There are two ways to import those users: by running a script or by using [`phpL
 
 - Build Docker Image
   - JVM
-    ```
+    ```bash
     ./build-docker-images.sh
     ```
   - Native
-    ```
+    ```bash
     ./build-docker-images.sh native
     ```
 
@@ -110,7 +110,7 @@ There are two ways to import those users: by running a script or by using [`phpL
   | `LDAP_PORT`          | Specify port of the `LDAP` to use (default `389`)       |
 
 - Run Docker Container
-  ```
+  ```bash
   docker run --rm --name simple-service -p 8080:8080 \
     -e LDAP_HOST=openldap \
     --network springboot-ldap-testcontainers_default \
@@ -122,54 +122,54 @@ There are two ways to import those users: by running a script or by using [`phpL
 1. Open a terminal
 
 2. Call the endpoint `/api/public`
-   ```
+   ```bash
    curl -i localhost:8080/api/public
    ```
 
    It should return
-   ```
+   ```text
    HTTP/1.1 200
    It is public.
    ```
 
 3. Try to call the endpoint `/api/private` without credentials
-   ```
+   ```bash
    curl -i localhost:8080/api/private
    ```
    
    It should return
-   ```
+   ```text
    HTTP/1.1 401
    ```
 
 4. Call the endpoint `/api/private` again. This time providing `username` and `password`
-   ```
+   ```bash
    curl -i -u bgates:123 localhost:8080/api/private
    ```
    
    It should return
-   ```
+   ```text
    HTTP/1.1 200
    bgates, it is private.
    ```
 
 5. Call the endpoint `/api/private` providing an invalid password
-   ```
+   ```bash
    curl -i -u bgates:124 localhost:8080/api/private
    ```
    
    It should return
-   ```
+   ```text
    HTTP/1.1 401 
    ```
 
 6. Call the endpoint `/api/private` providing a non-existing user
-   ```
+   ```bash
    curl -i -u cslim:123 localhost:8080/api/private
    ```
    
    It should return
-   ```
+   ```text
    HTTP/1.1 401
    ```
 
@@ -182,7 +182,7 @@ There are two ways to import those users: by running a script or by using [`phpL
 2. Click `GET /api/public` to open it; then, click `Try it out` button and, finally, `Execute` button.
 
    It should return
-   ```
+   ```text
    Code: 200
    Response Body: It is public.
    ```
@@ -194,7 +194,7 @@ There are two ways to import those users: by running a script or by using [`phpL
 5. Click `GET /api/private` to open it; then click `Try it out` button and, finally, `Execute` button.
 
    It should return
-   ```
+   ```text
    Code: 200
    Response Body: bgates, it is private.
    ```
@@ -203,7 +203,7 @@ There are two ways to import those users: by running a script or by using [`phpL
 
 - To stop the `simple-service` application, go to the terminal where it is running and press `Ctrl+C`
 - To stop and remove docker compose containers, network, and volumes, in a terminal and inside the `springboot-ldap-testcontainers` root folder, run the following command
-  ```
+  ```bash
   docker compose down -v
   ```
 
@@ -212,19 +212,19 @@ There are two ways to import those users: by running a script or by using [`phpL
 - In a terminal, make sure you are inside the `springboot-ldap-testcontainers` root folder
 
 - Run the command below to start the **Unit Tests**
-  ```
+  ```bash
   ./mvnw clean test --projects simple-service
   ```
 
 - Run the command below to start the **Unit** and **Integration Tests**
   > **Note**: `Testcontainers` will start the `OpenLDAP` Docker container automatically before some tests begin and will shut it down when the tests finish.
-  ```
+  ```bash
   ./mvnw clean verify --projects simple-service
   ```
 
 ## Cleanup
 
 To remove the Docker image created by this project, go to a terminal and, inside the `springboot-ldap-testcontainers` root folder, run the following script
-```
+```bash
 ./remove-docker-images.sh
 ```
