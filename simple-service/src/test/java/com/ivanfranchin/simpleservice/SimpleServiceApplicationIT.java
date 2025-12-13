@@ -1,5 +1,6 @@
 package com.ivanfranchin.simpleservice;
 
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -66,7 +67,7 @@ class SimpleServiceApplicationIT {
 
     @Test
     void testGetPublicString() {
-        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity(API_PUBLIC, String.class);
+        ResponseEntity<@NotNull String> responseEntity = testRestTemplate.getForEntity(API_PUBLIC, String.class);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(responseEntity.getBody()).isNotNull();
@@ -75,14 +76,14 @@ class SimpleServiceApplicationIT {
 
     @Test
     void testGetPrivateStringWithoutAuthentication() {
-        ResponseEntity<String> responseEntity = testRestTemplate.getForEntity(API_PRIVATE, String.class);
+        ResponseEntity<@NotNull String> responseEntity = testRestTemplate.getForEntity(API_PRIVATE, String.class);
 
         assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.UNAUTHORIZED);
     }
 
     @Test
     void testGetPrivateStringWithValidCredentials() {
-        ResponseEntity<String> responseEntity = testRestTemplate
+        ResponseEntity<@NotNull String> responseEntity = testRestTemplate
                 .withBasicAuth(BGATES_VALID_USERNAME, BGATES_VALID_PASSWORD)
                 .getForEntity(API_PRIVATE, String.class);
 
@@ -94,7 +95,7 @@ class SimpleServiceApplicationIT {
     @ParameterizedTest
     @MethodSource("provideInvalidCredentials")
     void testGetPrivateStringWithInvalidCredentials(String username, String password) {
-        ResponseEntity<String> responseEntity = testRestTemplate
+        ResponseEntity<@NotNull String> responseEntity = testRestTemplate
                 .withBasicAuth(username, password)
                 .getForEntity(API_PRIVATE, String.class);
 
